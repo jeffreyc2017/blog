@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Resolving VSCode Crash After Update on macOS | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Recently, I encountered a frustrating issue with Visual Studio Code (VSCode) on my macOS system. After performing an update, the application refused to open, effectively crashing on startup. If you’re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Resolving VSCode Crash After Update on macOS">
+<meta property="og:url" content="https://jeffreyc2017.github.io/blog/2024/07/08/vscode_crash_after_update/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="Recently, I encountered a frustrating issue with Visual Studio Code (VSCode) on my macOS system. After performing an update, the application refused to open, effectively crashing on startup. If you’re">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-08T03:44:03.000Z">
+<meta property="article:modified_time" content="2024-07-08T03:55:23.767Z">
+<meta property="article:author" content="Jeffrey Cai">
+<meta property="article:tag" content="VSCode">
+<meta property="article:tag" content="Troubleshooting">
+<meta property="article:tag" content="macOS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/blog/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jeffreyc2017.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-vscode_crash_after_update" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/07/08/vscode_crash_after_update/" class="article-date">
+  <time class="dt-published" datetime="2024-07-08T03:44:03.000Z" itemprop="datePublished">2024-07-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Resolving VSCode Crash After Update on macOS
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Recently, I encountered a frustrating issue with Visual Studio Code (VSCode) on my macOS system. After performing an update, the application refused to open, effectively crashing on startup. If you’re facing a similar problem, you’re not alone, and there’s a solution available.</p>
+<h2 id="The-Issue"><a href="#The-Issue" class="headerlink" title="The Issue"></a>The Issue</h2><p>The problem appears to be affecting macOS users who recently updated their VSCode installation. Upon attempting to launch the application, it fails to open, leaving users unable to access their development environment.<br>The problem I experienced is exactly the same as described in this Stack Overflow question:<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/78710474/cannot-open-vscode-on-macos-after-update">https://stackoverflow.com/questions/78710474/cannot-open-vscode-on-macos-after-update</a></p>
+<h2 id="The-Solution"><a href="#The-Solution" class="headerlink" title="The Solution"></a>The Solution</h2><p>After some research, I found that this issue has been reported and addressed by the VSCode team. Here’s how you can resolve it:</p>
+<ol>
+<li><p><strong>Download VSCode version 1.90</strong><br>The key to fixing this problem is to revert to a previous, stable version of VSCode. Specifically, you’ll need to download and install VSCode version 1.90.</p>
+<p>You can find the download link for VSCode 1.90 on the official Visual Studio Code updates page:<br><a target="_blank" rel="noopener" href="https://code.visualstudio.com/updates/v1_90">VSCode 1.90 Download</a></p>
+</li>
+<li><p><strong>Install the downloaded version</strong><br>Once you’ve downloaded VSCode 1.90, install it on your macOS system. This should replace the problematic updated version.</p>
+</li>
+<li><p><strong>Launch VSCode</strong><br>After installation, try launching VSCode again. It should now open without crashing.</p>
+</li>
+</ol>
+<h2 id="Additional-Information"><a href="#Additional-Information" class="headerlink" title="Additional Information"></a>Additional Information</h2><p>For those interested in the technical details or ongoing discussions about this issue, you can refer to the following GitHub issue threads:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/219893">VSCode GitHub Issue #219893</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/219893#issuecomment-2207559915">Specific comment with solution</a></li>
+</ul>
+<p>These threads contain valuable information about the nature of the problem and potential long-term fixes that the VSCode team may implement.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>While it’s inconvenient to encounter such issues after an update, it’s reassuring to know that the VSCode community and development team are quick to identify and provide solutions. By reverting to version 1.90, you should be able to continue using VSCode without interruption.</p>
+<p>Remember to keep an eye on future updates, as the VSCode team will likely address this issue in upcoming releases.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/07/08/vscode_crash_after_update/" data-id="clycr9lg700066yv0alssgd2o" data-title="Resolving VSCode Crash After Update on macOS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/VSCode/" rel="tag">VSCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/macOS/" rel="tag">macOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2024/07/08/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/GIT/" rel="tag">GIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/REACT/" rel="tag">REACT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/RETRO/" rel="tag">RETRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/VSCode/" rel="tag">VSCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/python/" rel="tag">python</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/GIT/" style="font-size: 10px;">GIT</a> <a href="/blog/tags/REACT/" style="font-size: 10px;">REACT</a> <a href="/blog/tags/RETRO/" style="font-size: 10px;">RETRO</a> <a href="/blog/tags/Troubleshooting/" style="font-size: 10px;">Troubleshooting</a> <a href="/blog/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/blog/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/blog/tags/python/" style="font-size: 10px;">python</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2024/07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/07/08/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/27/how-to-use-git-tag/">How to Use Git Tag</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/23/react-useeffect-best-practices/">Best Practices for Managing Side Effects in React with `useEffect`</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/16/retro-error/">retro warning message</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 Jeffrey Cai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

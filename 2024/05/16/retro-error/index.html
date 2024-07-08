@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>retro warning message | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1[W NNPACK.cpp:61] Could not initialize NNPACK! Reason: Unsupported hardware.  https:&#x2F;&#x2F;github.com&#x2F;pytorch&#x2F;pytorch&#x2F;blob&#x2F;70f4b3551c01230d4ab00da7bf453fa7c6b14eb9&#x2F;aten&#x2F;src&#x2F;ATen&#x2F;native&#x2F;NNPACK.cpp#L52-L72">
+<meta property="og:type" content="article">
+<meta property="og:title" content="retro warning message">
+<meta property="og:url" content="https://jeffreyc2017.github.io/blog/2024/05/16/retro-error/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="1[W NNPACK.cpp:61] Could not initialize NNPACK! Reason: Unsupported hardware.  https:&#x2F;&#x2F;github.com&#x2F;pytorch&#x2F;pytorch&#x2F;blob&#x2F;70f4b3551c01230d4ab00da7bf453fa7c6b14eb9&#x2F;aten&#x2F;src&#x2F;ATen&#x2F;native&#x2F;NNPACK.cpp#L52-L72">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-16T06:05:03.000Z">
+<meta property="article:modified_time" content="2024-07-08T03:43:13.514Z">
+<meta property="article:author" content="Jeffrey Cai">
+<meta property="article:tag" content="RETRO">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/blog/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jeffreyc2017.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-retro-error" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/05/16/retro-error/" class="article-date">
+  <time class="dt-published" datetime="2024-05-16T06:05:03.000Z" itemprop="datePublished">2024-05-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      retro warning message
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[W NNPACK.cpp:61] Could not initialize NNPACK! Reason: Unsupported hardware.</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch/blob/70f4b3551c01230d4ab00da7bf453fa7c6b14eb9/aten/src/ATen/native/NNPACK.cpp#L52-L72">https://github.com/pytorch/pytorch/blob/70f4b3551c01230d4ab00da7bf453fa7c6b14eb9/aten/src/ATen/native/NNPACK.cpp#L52-L72</a></p>
+<p><a target="_blank" rel="noopener" href="https://discuss.pytorch.org/t/bug-w-nnpack-cpp-80-could-not-initialize-nnpack-reason-unsupported-hardware/107518/23">https://discuss.pytorch.org/t/bug-w-nnpack-cpp-80-could-not-initialize-nnpack-reason-unsupported-hardware/107518/23</a></p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Architecture</th>
+<th>CPU requirements</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Linux</td>
+<td>x86-64</td>
+<td>AVX2 and 3-level cache hierarchy</td>
+</tr>
+</tbody></table>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">$ lscpu</span><br><span class="line">Architecture:            x86_64</span><br><span class="line">  CPU op-mode(s):        32-bit, 64-bit</span><br><span class="line">  Address sizes:         36 bits physical, 48 bits virtual</span><br><span class="line">  Byte Order:            Little Endian</span><br><span class="line">CPU(s):                  8</span><br><span class="line">  On-line CPU(s) list:   0-7</span><br><span class="line">Vendor ID:               GenuineIntel</span><br><span class="line">  Model name:            Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz</span><br><span class="line">    CPU family:          6</span><br><span class="line">    Model:               42</span><br><span class="line">    Thread(s) per core:  2</span><br><span class="line">    Core(s) per socket:  4</span><br><span class="line">    Socket(s):           1</span><br><span class="line">    Stepping:            7</span><br><span class="line">    CPU max MHz:         3800.0000</span><br><span class="line">    CPU min MHz:         1600.0000</span><br><span class="line">    BogoMIPS:            6784.75</span><br><span class="line">    Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mc</span><br><span class="line">                         a cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ht</span><br><span class="line">                         tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon p</span><br><span class="line">                         ebs bts rep_good nopl xtopology nonstop_tsc cpuid aperf</span><br><span class="line">                         mperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est t</span><br><span class="line">                         m2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcn</span><br><span class="line">                         t tsc_deadline_timer aes xsave avx lahf_lm epb pti ssbd</span><br><span class="line">                          ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid</span><br><span class="line">                         xsaveopt dtherm ida arat pln pts md_clear flush_l1d</span><br><span class="line">Virtualization features:</span><br><span class="line">  Virtualisation:        VT-x</span><br><span class="line">Caches (<span class="built_in">sum</span> of all):</span><br><span class="line">  L1d:                   128 KiB (4 instances)</span><br><span class="line">  L1i:                   128 KiB (4 instances)</span><br><span class="line">  L2:                    1 MiB (4 instances)</span><br><span class="line">  L3:                    8 MiB (1 instance)</span><br><span class="line">NUMA:</span><br><span class="line">  NUMA node(s):          1</span><br><span class="line">  NUMA node0 CPU(s):     0-7</span><br><span class="line">Vulnerabilities:</span><br><span class="line">  Gather data sampling:  Not affected</span><br><span class="line">  Itlb multihit:         KVM: Mitigation: VMX disabled</span><br><span class="line">  L1tf:                  Mitigation; PTE Inversion; VMX conditional cache flushe</span><br><span class="line">                         s, SMT vulnerable</span><br><span class="line">  Mds:                   Mitigation; Clear CPU buffers; SMT vulnerable</span><br><span class="line">  Meltdown:              Mitigation; PTI</span><br><span class="line">  Mmio stale data:       Unknown: No mitigations</span><br><span class="line">  Retbleed:              Not affected</span><br><span class="line">  Spec rstack overflow:  Not affected</span><br><span class="line">  Spec store bypass:     Mitigation; Speculative Store Bypass disabled via prctl</span><br><span class="line">                          and seccomp</span><br><span class="line">  Spectre v1:            Mitigation; usercopy/swapgs barriers and __user pointer</span><br><span class="line">                          sanitization</span><br><span class="line">  Spectre v2:            Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIB</span><br><span class="line">                         P conditional; RSB filling; PBRSB-eIBRS Not affected; B</span><br><span class="line">                         HI Not affected</span><br><span class="line">  Srbds:                 Not affected</span><br><span class="line">  Tsx async abort:       Not affected</span><br></pre></td></tr></table></figure>
+
+<p><strong>AVX2</strong> (Advanced Vector Extensions 2) is an expansion of the AVX instruction set introduced by Intel and AMD. It provides additional instructions to accelerate integer vector operations. AVX2 builds upon the foundation of AVX, offering higher performance and efficiency for certain computational workloads.</p>
+<p>AVX2 introduces several new features, including:</p>
+<ul>
+<li>Support for 256-bit integer vector operations: AVX2 extends the width of vector registers from 128 bits to 256 bits, allowing for more data to be processed simultaneously.</li>
+<li>New integer vector instructions: AVX2 adds new instructions for integer vector arithmetic, bitwise operations, and vector shuffles, providing - enhanced capabilities for tasks such as image processing, cryptography, and scientific computing.</li>
+<li>Enhanced gather and scatter operations: AVX2 includes new instructions for indexed memory operations, enabling more efficient data movement - between memory and vector registers.</li>
+</ul>
+<p>CPUs that support AVX2 typically belong to newer generations and include various Intel and AMD processors released after 2013. Some examples of CPUs that support AVX2 include:</p>
+<ul>
+<li>Intel Haswell (4th generation Core processors) and newer.</li>
+<li>Intel Broadwell, Skylake, Kaby Lake, Coffee Lake, Comet Lake, and later microarchitectures.</li>
+<li>AMD Ryzen processors (starting with the first-generation Ryzen CPUs).</li>
+<li>AMD Ryzen Threadripper processors.</li>
+<li>AMD EPYC processors.</li>
+</ul>
+<p>These processors offer improved performance for workloads that can leverage AVX2 instructions, making them well-suited for tasks involving heavy computational workloads, such as machine learning, numerical simulations, and media processing.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/05/16/retro-error/" data-id="clycr9lg600056yv0gkpwetf8" data-title="retro warning message" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/RETRO/" rel="tag">RETRO</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2024/05/23/react-useeffect-best-practices/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Best Practices for Managing Side Effects in React with `useEffect`
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2024/05/16/pyenv-install/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">pyenv install notes</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/GIT/" rel="tag">GIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/REACT/" rel="tag">REACT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/RETRO/" rel="tag">RETRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/VSCode/" rel="tag">VSCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/python/" rel="tag">python</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/GIT/" style="font-size: 10px;">GIT</a> <a href="/blog/tags/REACT/" style="font-size: 10px;">REACT</a> <a href="/blog/tags/RETRO/" style="font-size: 10px;">RETRO</a> <a href="/blog/tags/Troubleshooting/" style="font-size: 10px;">Troubleshooting</a> <a href="/blog/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/blog/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/blog/tags/python/" style="font-size: 10px;">python</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2024/07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/07/08/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/27/how-to-use-git-tag/">How to Use Git Tag</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/23/react-useeffect-best-practices/">Best Practices for Managing Side Effects in React with `useEffect`</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/16/retro-error/">retro warning message</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 Jeffrey Cai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

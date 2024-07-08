@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Blog">
+<meta property="og:url" content="https://jeffreyc2017.github.io/blog/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Jeffrey Cai">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/blog/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jeffreyc2017.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-vscode_crash_after_update" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/07/08/vscode_crash_after_update/" class="article-date">
+  <time class="dt-published" datetime="2024-07-08T03:44:03.000Z" itemprop="datePublished">2024-07-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2024/07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Recently, I encountered a frustrating issue with Visual Studio Code (VSCode) on my macOS system. After performing an update, the application refused to open, effectively crashing on startup. If you’re facing a similar problem, you’re not alone, and there’s a solution available.</p>
+<h2 id="The-Issue"><a href="#The-Issue" class="headerlink" title="The Issue"></a>The Issue</h2><p>The problem appears to be affecting macOS users who recently updated their VSCode installation. Upon attempting to launch the application, it fails to open, leaving users unable to access their development environment.<br>The problem I experienced is exactly the same as described in this Stack Overflow question:<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/78710474/cannot-open-vscode-on-macos-after-update">https://stackoverflow.com/questions/78710474/cannot-open-vscode-on-macos-after-update</a></p>
+<h2 id="The-Solution"><a href="#The-Solution" class="headerlink" title="The Solution"></a>The Solution</h2><p>After some research, I found that this issue has been reported and addressed by the VSCode team. Here’s how you can resolve it:</p>
+<ol>
+<li><p><strong>Download VSCode version 1.90</strong><br>The key to fixing this problem is to revert to a previous, stable version of VSCode. Specifically, you’ll need to download and install VSCode version 1.90.</p>
+<p>You can find the download link for VSCode 1.90 on the official Visual Studio Code updates page:<br><a target="_blank" rel="noopener" href="https://code.visualstudio.com/updates/v1_90">VSCode 1.90 Download</a></p>
+</li>
+<li><p><strong>Install the downloaded version</strong><br>Once you’ve downloaded VSCode 1.90, install it on your macOS system. This should replace the problematic updated version.</p>
+</li>
+<li><p><strong>Launch VSCode</strong><br>After installation, try launching VSCode again. It should now open without crashing.</p>
+</li>
+</ol>
+<h2 id="Additional-Information"><a href="#Additional-Information" class="headerlink" title="Additional Information"></a>Additional Information</h2><p>For those interested in the technical details or ongoing discussions about this issue, you can refer to the following GitHub issue threads:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/219893">VSCode GitHub Issue #219893</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/219893#issuecomment-2207559915">Specific comment with solution</a></li>
+</ul>
+<p>These threads contain valuable information about the nature of the problem and potential long-term fixes that the VSCode team may implement.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>While it’s inconvenient to encounter such issues after an update, it’s reassuring to know that the VSCode community and development team are quick to identify and provide solutions. By reverting to version 1.90, you should be able to continue using VSCode without interruption.</p>
+<p>Remember to keep an eye on future updates, as the VSCode team will likely address this issue in upcoming releases.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/07/08/vscode_crash_after_update/" data-id="clycr9lg700066yv0alssgd2o" data-title="Resolving VSCode Crash After Update on macOS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/VSCode/" rel="tag">VSCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/macOS/" rel="tag">macOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/07/08/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2024-07-08T03:43:13.509Z" itemprop="datePublished">2024-07-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2024/07/08/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/07/08/hello-world/" data-id="clycr9lfp00006yv0ebidfgir" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-how-to-use-git-tag" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/05/27/how-to-use-git-tag/" class="article-date">
+  <time class="dt-published" datetime="2024-05-27T08:52:03.000Z" itemprop="datePublished">2024-05-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2024/05/27/how-to-use-git-tag/">How to Use Git Tag</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Git tags are used to mark specific points in your repository’s history. This is typically done to mark release points (e.g., v1.0, v2.0). There are two types of tags in Git: lightweight and annotated. Here’s how to use them:</p>
+<h3 id="Creating-Tags"><a href="#Creating-Tags" class="headerlink" title="Creating Tags"></a>Creating Tags</h3><ol>
+<li><p><strong>Lightweight Tag</strong>:<br>A lightweight tag is like a branch that doesn’t change. It’s just a pointer to a commit.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag &lt;tagname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag v1.0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Annotated Tag</strong>:<br>Annotated tags are stored as full objects in the Git database. They can have a message, and metadata such as the tagger’s name, email, and date.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a &lt;tagname&gt; -m <span class="string">&quot;message&quot;</span></span><br></pre></td></tr></table></figure>
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.0 -m <span class="string">&quot;Release version 1.0&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Viewing-Tags"><a href="#Viewing-Tags" class="headerlink" title="Viewing Tags"></a>Viewing Tags</h3><p>To list all tags in your repository:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag</span><br></pre></td></tr></table></figure>
+
+<p>To view details of a specific tag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show &lt;tagname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show v1.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="Sharing-Tags"><a href="#Sharing-Tags" class="headerlink" title="Sharing Tags"></a>Sharing Tags</h3><p>By default, <code>git push</code> does not push tags to remote repositories. To push a specific tag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin &lt;tagname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin v1.0</span><br></pre></td></tr></table></figure>
+
+<p>To push all tags at once:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --tags</span><br></pre></td></tr></table></figure>
+
+<h3 id="Deleting-Tags"><a href="#Deleting-Tags" class="headerlink" title="Deleting Tags"></a>Deleting Tags</h3><p>To delete a local tag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -d &lt;tagname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -d v1.0</span><br></pre></td></tr></table></figure>
+
+<p>To delete a remote tag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --delete &lt;tagname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --delete v1.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="Checking-Out-Tags"><a href="#Checking-Out-Tags" class="headerlink" title="Checking Out Tags"></a>Checking Out Tags</h3><p>To checkout a specific tag (this puts you in a “detached HEAD” state, meaning you are not on a branch):</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;tagname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout v1.0</span><br></pre></td></tr></table></figure>
+
+<p>Remember that when you are in a detached HEAD state, any changes you make are not associated with any branch unless you create a new branch from this state.</p>
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><ul>
+<li><strong>Create a lightweight tag</strong>: <code>git tag &lt;tagname&gt;</code></li>
+<li><strong>Create an annotated tag</strong>: <code>git tag -a &lt;tagname&gt; -m &quot;message&quot;</code></li>
+<li><strong>List tags</strong>: <code>git tag</code></li>
+<li><strong>Show tag details</strong>: <code>git show &lt;tagname&gt;</code></li>
+<li><strong>Push a specific tag</strong>: <code>git push origin &lt;tagname&gt;</code></li>
+<li><strong>Push all tags</strong>: <code>git push origin --tags</code></li>
+<li><strong>Delete a local tag</strong>: <code>git tag -d &lt;tagname&gt;</code></li>
+<li><strong>Delete a remote tag</strong>: <code>git push origin --delete &lt;tagname&gt;</code></li>
+<li><strong>Checkout a tag</strong>: <code>git checkout &lt;tagname&gt;</code></li>
+</ul>
+<p>Using these commands, you can effectively manage tags in your Git repositories.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/05/27/how-to-use-git-tag/" data-id="clycr9lfw00016yv04mtp8san" data-title="How to Use Git Tag" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/GIT/" rel="tag">GIT</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-react-useeffect-best-practices" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/05/23/react-useeffect-best-practices/" class="article-date">
+  <time class="dt-published" datetime="2024-05-23T04:16:03.000Z" itemprop="datePublished">2024-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2024/05/23/react-useeffect-best-practices/">Best Practices for Managing Side Effects in React with `useEffect`</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>When working with <code>useEffect</code> in React, the way you handle subscriptions is crucial for maintaining performance and avoiding memory leaks. Let’s explore two forms of <code>useEffect</code> for managing authentication state changes using Firebase’s <code>onAuthStateChanged</code> and understand why one approach is superior.</p>
+<h3 id="Handling-Subscriptions-with-Cleanup"><a href="#Handling-Subscriptions-with-Cleanup" class="headerlink" title="Handling Subscriptions with Cleanup"></a>Handling Subscriptions with Cleanup</h3><p>First, consider the following example where we properly manage the subscription by including an unsubscribe mechanism:</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> auth = <span class="title function_">getAuth</span>();</span><br><span class="line">  <span class="keyword">const</span> unsubscribe = <span class="title function_">onAuthStateChanged</span>(auth, <span class="function">(<span class="params">user</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (user) &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="attr">userProfile</span>: <span class="title class_">UserInfo</span> = user.<span class="property">providerData</span>[<span class="number">0</span>];</span><br><span class="line">      <span class="title function_">setUserInfo</span>(&#123;</span><br><span class="line">        <span class="attr">providerId</span>: userProfile.<span class="property">providerId</span>,</span><br><span class="line">        <span class="attr">uid</span>: userProfile.<span class="property">uid</span>,</span><br><span class="line">        <span class="attr">displayName</span>: userProfile.<span class="property">displayName</span>,</span><br><span class="line">        <span class="attr">email</span>: userProfile.<span class="property">email</span>,</span><br><span class="line">        <span class="attr">photoURL</span>: userProfile.<span class="property">photoURL</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">setLoading</span>(<span class="literal">false</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> <span class="title function_">unsubscribe</span>();</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Handling-Subscriptions-Without-Cleanup"><a href="#Handling-Subscriptions-Without-Cleanup" class="headerlink" title="Handling Subscriptions Without Cleanup"></a>Handling Subscriptions Without Cleanup</h3><p>Now, compare it with a version that does not manage the subscription cleanup:</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> auth = <span class="title function_">getAuth</span>();</span><br><span class="line">  <span class="title function_">onAuthStateChanged</span>(auth, <span class="function">(<span class="params">user</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (user) &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="attr">userProfile</span>: <span class="title class_">UserInfo</span> = user.<span class="property">providerData</span>[<span class="number">0</span>];</span><br><span class="line">      <span class="title function_">setUserInfo</span>(&#123;</span><br><span class="line">        <span class="attr">providerId</span>: userProfile.<span class="property">providerId</span>,</span><br><span class="line">        <span class="attr">uid</span>: userProfile.<span class="property">uid</span>,</span><br><span class="line">        <span class="attr">displayName</span>: userProfile.<span class="property">displayName</span>,</span><br><span class="line">        <span class="attr">email</span>: userProfile.<span class="property">email</span>,</span><br><span class="line">        <span class="attr">photoURL</span>: userProfile.<span class="property">photoURL</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">setLoading</span>(<span class="literal">false</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Why-the-Unsubscribe-Form-is-Preferable"><a href="#Why-the-Unsubscribe-Form-is-Preferable" class="headerlink" title="Why the Unsubscribe Form is Preferable"></a>Why the Unsubscribe Form is Preferable</h3><p>Using the form with <code>unsubscribe</code> is generally better for several reasons:</p>
+<ol>
+<li><p><strong>Memory Management:</strong></p>
+<ul>
+<li>Subscriptions persist until explicitly cancelled. By calling <code>unsubscribe</code> in the cleanup phase of <code>useEffect</code>, you ensure the subscription is terminated when the component unmounts or the effect dependencies change, preventing memory leaks.</li>
+</ul>
+</li>
+<li><p><strong>Avoiding Multiple Subscriptions:</strong></p>
+<ul>
+<li>If the dependencies of the <code>useEffect</code> change, the effect re-runs. Without cleanup, each re-run creates a new subscription, leading to multiple active subscriptions and potential issues. The unsubscribe method ensures only one active subscription at a time.</li>
+</ul>
+</li>
+<li><p><strong>Best Practices:</strong></p>
+<ul>
+<li>Explicitly handling side effect cleanups is a best practice in React. It ensures your component releases resources correctly, leading to predictable behavior and preventing issues caused by stale listeners or handlers.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>While the second form (without <code>unsubscribe</code>) may be adequate for simple scenarios or quick experiments, the first form (with <code>unsubscribe</code>) is more robust. It aligns with React’s best practices for managing side effects and resource cleanup, ensuring your component remains performant and reliable, particularly in larger or more complex applications. Always favor the approach that includes cleanup to maintain optimal performance and avoid potential pitfalls.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/05/23/react-useeffect-best-practices/" data-id="clycr9lg400046yv00xne0dhw" data-title="Best Practices for Managing Side Effects in React with `useEffect`" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/REACT/" rel="tag">REACT</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-retro-error" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/05/16/retro-error/" class="article-date">
+  <time class="dt-published" datetime="2024-05-16T06:05:03.000Z" itemprop="datePublished">2024-05-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2024/05/16/retro-error/">retro warning message</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[W NNPACK.cpp:61] Could not initialize NNPACK! Reason: Unsupported hardware.</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/pytorch/pytorch/blob/70f4b3551c01230d4ab00da7bf453fa7c6b14eb9/aten/src/ATen/native/NNPACK.cpp#L52-L72">https://github.com/pytorch/pytorch/blob/70f4b3551c01230d4ab00da7bf453fa7c6b14eb9/aten/src/ATen/native/NNPACK.cpp#L52-L72</a></p>
+<p><a target="_blank" rel="noopener" href="https://discuss.pytorch.org/t/bug-w-nnpack-cpp-80-could-not-initialize-nnpack-reason-unsupported-hardware/107518/23">https://discuss.pytorch.org/t/bug-w-nnpack-cpp-80-could-not-initialize-nnpack-reason-unsupported-hardware/107518/23</a></p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Architecture</th>
+<th>CPU requirements</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Linux</td>
+<td>x86-64</td>
+<td>AVX2 and 3-level cache hierarchy</td>
+</tr>
+</tbody></table>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">$ lscpu</span><br><span class="line">Architecture:            x86_64</span><br><span class="line">  CPU op-mode(s):        32-bit, 64-bit</span><br><span class="line">  Address sizes:         36 bits physical, 48 bits virtual</span><br><span class="line">  Byte Order:            Little Endian</span><br><span class="line">CPU(s):                  8</span><br><span class="line">  On-line CPU(s) list:   0-7</span><br><span class="line">Vendor ID:               GenuineIntel</span><br><span class="line">  Model name:            Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz</span><br><span class="line">    CPU family:          6</span><br><span class="line">    Model:               42</span><br><span class="line">    Thread(s) per core:  2</span><br><span class="line">    Core(s) per socket:  4</span><br><span class="line">    Socket(s):           1</span><br><span class="line">    Stepping:            7</span><br><span class="line">    CPU max MHz:         3800.0000</span><br><span class="line">    CPU min MHz:         1600.0000</span><br><span class="line">    BogoMIPS:            6784.75</span><br><span class="line">    Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mc</span><br><span class="line">                         a cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ht</span><br><span class="line">                         tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon p</span><br><span class="line">                         ebs bts rep_good nopl xtopology nonstop_tsc cpuid aperf</span><br><span class="line">                         mperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est t</span><br><span class="line">                         m2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcn</span><br><span class="line">                         t tsc_deadline_timer aes xsave avx lahf_lm epb pti ssbd</span><br><span class="line">                          ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid</span><br><span class="line">                         xsaveopt dtherm ida arat pln pts md_clear flush_l1d</span><br><span class="line">Virtualization features:</span><br><span class="line">  Virtualisation:        VT-x</span><br><span class="line">Caches (<span class="built_in">sum</span> of all):</span><br><span class="line">  L1d:                   128 KiB (4 instances)</span><br><span class="line">  L1i:                   128 KiB (4 instances)</span><br><span class="line">  L2:                    1 MiB (4 instances)</span><br><span class="line">  L3:                    8 MiB (1 instance)</span><br><span class="line">NUMA:</span><br><span class="line">  NUMA node(s):          1</span><br><span class="line">  NUMA node0 CPU(s):     0-7</span><br><span class="line">Vulnerabilities:</span><br><span class="line">  Gather data sampling:  Not affected</span><br><span class="line">  Itlb multihit:         KVM: Mitigation: VMX disabled</span><br><span class="line">  L1tf:                  Mitigation; PTE Inversion; VMX conditional cache flushe</span><br><span class="line">                         s, SMT vulnerable</span><br><span class="line">  Mds:                   Mitigation; Clear CPU buffers; SMT vulnerable</span><br><span class="line">  Meltdown:              Mitigation; PTI</span><br><span class="line">  Mmio stale data:       Unknown: No mitigations</span><br><span class="line">  Retbleed:              Not affected</span><br><span class="line">  Spec rstack overflow:  Not affected</span><br><span class="line">  Spec store bypass:     Mitigation; Speculative Store Bypass disabled via prctl</span><br><span class="line">                          and seccomp</span><br><span class="line">  Spectre v1:            Mitigation; usercopy/swapgs barriers and __user pointer</span><br><span class="line">                          sanitization</span><br><span class="line">  Spectre v2:            Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIB</span><br><span class="line">                         P conditional; RSB filling; PBRSB-eIBRS Not affected; B</span><br><span class="line">                         HI Not affected</span><br><span class="line">  Srbds:                 Not affected</span><br><span class="line">  Tsx async abort:       Not affected</span><br></pre></td></tr></table></figure>
+
+<p><strong>AVX2</strong> (Advanced Vector Extensions 2) is an expansion of the AVX instruction set introduced by Intel and AMD. It provides additional instructions to accelerate integer vector operations. AVX2 builds upon the foundation of AVX, offering higher performance and efficiency for certain computational workloads.</p>
+<p>AVX2 introduces several new features, including:</p>
+<ul>
+<li>Support for 256-bit integer vector operations: AVX2 extends the width of vector registers from 128 bits to 256 bits, allowing for more data to be processed simultaneously.</li>
+<li>New integer vector instructions: AVX2 adds new instructions for integer vector arithmetic, bitwise operations, and vector shuffles, providing - enhanced capabilities for tasks such as image processing, cryptography, and scientific computing.</li>
+<li>Enhanced gather and scatter operations: AVX2 includes new instructions for indexed memory operations, enabling more efficient data movement - between memory and vector registers.</li>
+</ul>
+<p>CPUs that support AVX2 typically belong to newer generations and include various Intel and AMD processors released after 2013. Some examples of CPUs that support AVX2 include:</p>
+<ul>
+<li>Intel Haswell (4th generation Core processors) and newer.</li>
+<li>Intel Broadwell, Skylake, Kaby Lake, Coffee Lake, Comet Lake, and later microarchitectures.</li>
+<li>AMD Ryzen processors (starting with the first-generation Ryzen CPUs).</li>
+<li>AMD Ryzen Threadripper processors.</li>
+<li>AMD EPYC processors.</li>
+</ul>
+<p>These processors offer improved performance for workloads that can leverage AVX2 instructions, making them well-suited for tasks involving heavy computational workloads, such as machine learning, numerical simulations, and media processing.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/05/16/retro-error/" data-id="clycr9lg600056yv0gkpwetf8" data-title="retro warning message" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/RETRO/" rel="tag">RETRO</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-pyenv-install" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2024/05/16/pyenv-install/" class="article-date">
+  <time class="dt-published" datetime="2024-05-16T06:02:03.000Z" itemprop="datePublished">2024-05-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2024/05/16/pyenv-install/">pyenv install notes</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://github.com/pyenv/pyenv">https://github.com/pyenv/pyenv</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://pyenv.run | bash</span><br><span class="line"></span><br><span class="line">Cloning into <span class="string">&#x27;~/.pyenv&#x27;</span>...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">WARNING: seems you still have not added <span class="string">&#x27;pyenv&#x27;</span> to the load path.</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load pyenv automatically by appending</span></span><br><span class="line"><span class="comment"># the following to</span></span><br><span class="line"><span class="comment"># ~/.bash_profile if it exists, otherwise ~/.profile (for login shells)</span></span><br><span class="line"><span class="comment"># and ~/.bashrc (for interactive shells) :</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PYENV_ROOT=<span class="string">&quot;<span class="variable">$HOME</span>/.pyenv&quot;</span></span><br><span class="line">[[ -d <span class="variable">$PYENV_ROOT</span>/bin ]] &amp;&amp; <span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$PYENV_ROOT</span>/bin:<span class="variable">$PATH</span>&quot;</span></span><br><span class="line"><span class="built_in">eval</span> <span class="string">&quot;<span class="subst">$(pyenv init -)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Restart your shell for the changes to take effect.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load pyenv-virtualenv automatically by adding</span></span><br><span class="line"><span class="comment"># the following to ~/.bashrc:</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> <span class="string">&quot;<span class="subst">$(pyenv virtualenv-init -)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/05/16/pyenv-install/" data-id="clycr9lg000026yv0gop1951i" data-title="pyenv install notes" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/GIT/" rel="tag">GIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/REACT/" rel="tag">REACT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/RETRO/" rel="tag">RETRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/VSCode/" rel="tag">VSCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/python/" rel="tag">python</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/GIT/" style="font-size: 10px;">GIT</a> <a href="/blog/tags/REACT/" style="font-size: 10px;">REACT</a> <a href="/blog/tags/RETRO/" style="font-size: 10px;">RETRO</a> <a href="/blog/tags/Troubleshooting/" style="font-size: 10px;">Troubleshooting</a> <a href="/blog/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/blog/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/blog/tags/python/" style="font-size: 10px;">python</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2024/07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/07/08/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/27/how-to-use-git-tag/">How to Use Git Tag</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/23/react-useeffect-best-practices/">Best Practices for Managing Side Effects in React with `useEffect`</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/16/retro-error/">retro warning message</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 Jeffrey Cai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
