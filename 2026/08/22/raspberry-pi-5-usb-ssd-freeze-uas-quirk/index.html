@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復 | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="我有一台 Raspberry Pi 5，root 檔案系統跑在一顆外接 USB SSD 上，平常掛著一個常駐的 web 服務。某天它突然「連不上」——SSH、網頁全都沒反應，只能手動拔電重開。這篇記錄我怎麼一步步把原因鎖定到外接 SSD 的 USB 橋接晶片，以及最後怎麼修。 現象 服務與 SSH 全部無回應，整台機器像從網路上消失。 沒有任何預警，重開機後一切又正常。 直覺會以為是「網路斷線」，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復">
+<meta property="og:url" content="https://jeffreyc2017.github.io/blog/2026/08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="我有一台 Raspberry Pi 5，root 檔案系統跑在一顆外接 USB SSD 上，平常掛著一個常駐的 web 服務。某天它突然「連不上」——SSH、網頁全都沒反應，只能手動拔電重開。這篇記錄我怎麼一步步把原因鎖定到外接 SSD 的 USB 橋接晶片，以及最後怎麼修。 現象 服務與 SSH 全部無回應，整台機器像從網路上消失。 沒有任何預警，重開機後一切又正常。 直覺會以為是「網路斷線」，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-22T21:40:00.000Z">
+<meta property="article:modified_time" content="2026-08-22T14:30:18.317Z">
+<meta property="article:author" content="Jeffrey Cai">
+<meta property="article:tag" content="Raspberry Pi">
+<meta property="article:tag" content="SSD">
+<meta property="article:tag" content="Troubleshooting">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/blog/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jeffreyc2017.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-raspberry-pi-5-usb-ssd-freeze-uas-quirk" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2026/08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/" class="article-date">
+  <time class="dt-published" datetime="2026-08-22T21:40:00.000Z" itemprop="datePublished">2026-08-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我有一台 Raspberry Pi 5，root 檔案系統跑在一顆外接 USB SSD 上，平常掛著一個常駐的 web 服務。某天它突然「連不上」——SSH、網頁全都沒反應，只能手動拔電重開。這篇記錄我怎麼一步步把原因鎖定到<strong>外接 SSD 的 USB 橋接晶片</strong>，以及最後怎麼修。</p>
+<h2 id="現象"><a href="#現象" class="headerlink" title="現象"></a>現象</h2><ul>
+<li>服務與 SSH 全部無回應，整台機器像從網路上消失。</li>
+<li>沒有任何預警，重開機後一切又正常。</li>
+<li>直覺會以為是「網路斷線」，但事實不是。</li>
+</ul>
+<h2 id="第一步：這是斷線，還是整台凍死？"><a href="#第一步：這是斷線，還是整台凍死？" class="headerlink" title="第一步：這是斷線，還是整台凍死？"></a>第一步：這是斷線，還是整台凍死？</h2><p>關鍵證據在系統日誌。先看上一次開機（<code>-1</code>）的日誌尾端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -b -1 --no-pager | <span class="built_in">tail</span> -60</span><br></pre></td></tr></table></figure>
+
+<p>結果日誌在 <strong>20:12:30 戛然而止</strong>，停在服務每隔幾秒一次的正常輪詢中間，之後直到我手動重開（約 47 分鐘後）<strong>完全空白</strong>。再對照開關機記錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last -x reboot shutdown | <span class="built_in">head</span></span><br></pre></td></tr></table></figure>
+
+<p>兩次開機之間<strong>沒有 shutdown 記錄</strong>——代表系統不是正常關機，是被硬斷電的。</p>
+<p>這兩點合起來說明：<strong>不是網路掉線，也不是單一服務崩潰</strong>（那樣其他服務還會繼續寫日誌），而是 <strong>journald 本身都停止寫入 &#x3D; 整個作業系統凍死（hard freeze）</strong>，所以才會「連不上」。</p>
+<h2 id="第二步：逐一排除常見死因"><a href="#第二步：逐一排除常見死因" class="headerlink" title="第二步：逐一排除常見死因"></a>第二步：逐一排除常見死因</h2><p>Pi 當機最常見的幾個原因，用日誌與現場狀態逐一排除：</p>
+<table>
+<thead>
+<tr>
+<th>嫌疑</th>
+<th>檢查方式</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>欠壓 &#x2F; 電源不穩</td>
+<td><code>vcgencmd get_throttled</code>、journal 搜尋 under-voltage</td>
+<td><code>0x0</code>，全程無記錄 ❌</td>
+</tr>
+<tr>
+<td>過熱降頻</td>
+<td><code>vcgencmd measure_temp</code></td>
+<td>~60°C，無 thermal throttle ❌</td>
+</tr>
+<tr>
+<td>記憶體耗盡（OOM）</td>
+<td>journal 搜尋 <code>oom-kill</code></td>
+<td>記憶體充足、swap 沒動 ❌</td>
+</tr>
+<tr>
+<td>Kernel panic &#x2F; soft-lockup &#x2F; RCU stall</td>
+<td><code>journalctl -b -1 -k</code> 搜尋</td>
+<td>完全沒有 ❌</td>
+</tr>
+<tr>
+<td>磁碟寫滿</td>
+<td><code>df -h /</code></td>
+<td>只用 29% ❌</td>
+</tr>
+<tr>
+<td>SSD 硬體故障</td>
+<td><code>smartctl -H /dev/sda</code></td>
+<td><strong>PASSED</strong>（碟本身健康）❌</td>
+</tr>
+</tbody></table>
+<p>軟體、電源、溫度、記憶體、磁碟空間、硬碟健康——全部排除。一個「什麼都沒記錄到」的完全凍死，開始把矛頭指向底層硬體。</p>
+<h2 id="第三步：鎖定根因"><a href="#第三步：鎖定根因" class="headerlink" title="第三步：鎖定根因"></a>第三步：鎖定根因</h2><p>先看 root 到底掛在什麼裝置上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsblk -o NAME,SIZE,TYPE,TRAN,MODEL,MOUNTPOINT</span><br><span class="line">lsusb</span><br></pre></td></tr></table></figure>
+
+<p>答案是：root（<code>/dev/sda2</code>）在一顆外接 USB SSD 上，透過 <strong>Realtek RTL9210B-CG</strong>（USB id <code>0bda:9210</code>，一顆 M.2 NVMe → USB 橋接晶片）連接，且目前綁在 <strong><code>uas</code> 驅動</strong>（USB Attached SCSI）上。</p>
+<p>再看 USB 連結的健康狀況，兩次開機都各有幾筆：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usb 2-1: Enable of device-initiated U1 failed.</span><br><span class="line">usb 2-1: Enable of device-initiated U2 failed.</span><br></pre></td></tr></table></figure>
+
+<p>這是這顆橋接晶片 USB3 連結電源狀態（LPM）協商不良的訊號。</p>
+<p><strong>RTL9210 &#x2F; RTL9210B + UAS + Pi</strong> 是社群裡惡名昭彰的組合：這顆橋接在 UAS 模式下、連結不穩時會<strong>突然從 USB 匯流排掉線</strong>。而因為 <strong>root 就在這顆碟上</strong>，一旦碟消失，kernel 連日誌都寫不進去（記錄目標沒了），整台機器瞬間凍住、網路全死，只能硬斷電——這正好完美對上我們看到的指紋。</p>
+<blockquote>
+<p>誠實說一句：因為是「凍死」，當下那一刻按定義<strong>寫不出任何 log</strong>，所以不存在一行「鐵證日誌」。以上是「排除法 + 硬體指紋 + 前後的 U1&#x2F;U2 失敗」三者共同指向的高信心結論。</p>
+</blockquote>
+<h2 id="修復：停用這顆橋接的-UAS"><a href="#修復：停用這顆橋接的-UAS" class="headerlink" title="修復：停用這顆橋接的 UAS"></a>修復：停用這顆橋接的 UAS</h2><p>最簡單有效的做法，是針對這顆橋接<strong>停用 UAS</strong>，退回較保守但穩定的 BOT（Bulk-Only Transport）模式。在 <code>/boot/firmware/cmdline.txt</code>（<strong>必須維持單行</strong>）結尾加上：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usb-storage.quirks=0bda:9210:u</span><br></pre></td></tr></table></figure>
+
+<p><code>0bda:9210</code> 是這顆橋接的 vid:pid，<code>:u</code> 代表對它停用 UAS。改完重開機生效。</p>
+<p><strong>修改前務必備份</strong>（root 在這顆碟上，動開機參數要小心）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> -a /boot/firmware/cmdline.txt /boot/firmware/cmdline.txt.bak-$(<span class="built_in">date</span> +%Y%m%d-%H%M%S)</span><br></pre></td></tr></table></figure>
+
+<p>重開機後驗證是否生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 驅動應該從 uas 換成 usb-storage</span></span><br><span class="line"><span class="built_in">ls</span> /sys/bus/usb/drivers/uas/          <span class="comment"># 應該沒有裝置</span></span><br><span class="line">dmesg | grep -iE <span class="string">&quot;UAS is ignored|Quirks match&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>看到這兩行就對了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usb 2-1: UAS is ignored for this device, using usb-storage instead</span><br><span class="line">usb-storage 2-1:1.0: Quirks match for vid 0bda pid 9210: 800000</span><br></pre></td></tr></table></figure>
+
+<h2 id="效能代價：實測-UAS-vs-BOT"><a href="#效能代價：實測-UAS-vs-BOT" class="headerlink" title="效能代價：實測 UAS vs BOT"></a>效能代價：實測 UAS vs BOT</h2><p>停用 UAS 一定有代價，但到底掉多少？我用 <code>fio</code> 在改動前後各跑一次相同測試（測試檔寫在真正的 SSD 上、<code>--direct=1</code> 繞過 cache）：</p>
+<table>
+<thead>
+<tr>
+<th>測項</th>
+<th>UAS（前）</th>
+<th>BOT（後）</th>
+<th>變化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>循序讀 (1M, QD16)</td>
+<td>389 MB&#x2F;s</td>
+<td>373 MB&#x2F;s</td>
+<td><strong>−4%</strong></td>
+</tr>
+<tr>
+<td>循序寫 (1M, QD16)</td>
+<td>360 MB&#x2F;s</td>
+<td>349 MB&#x2F;s</td>
+<td><strong>−3%</strong></td>
+</tr>
+<tr>
+<td>隨機讀 4K <strong>QD32</strong></td>
+<td>32.4k IOPS</td>
+<td>6.5k IOPS</td>
+<td><strong>−80%</strong></td>
+</tr>
+<tr>
+<td>隨機寫 4K <strong>QD32</strong></td>
+<td>34.8k IOPS</td>
+<td>7.4k IOPS</td>
+<td><strong>−79%</strong></td>
+</tr>
+<tr>
+<td>隨機讀 4K <strong>QD1</strong></td>
+<td>6,302 IOPS</td>
+<td>6,378 IOPS</td>
+<td>~持平</td>
+</tr>
+</tbody></table>
+<p>解讀：</p>
+<ul>
+<li><strong>循序讀寫幾乎無損</strong>（−3～4%）：開機、複製大檔、備份完全無感。</li>
+<li><strong>QD1（一次一條操作）完全沒變</strong>：單執行緒、延遲受限的存取不受影響。</li>
+<li><strong>深佇列隨機 IOPS 掉約 80%<strong>：這就是 UAS 指令佇列消失的代價。注意 BOT 的 QD32 成績幾乎等於它自己的 QD1——證明 BOT 把並發請求</strong>序列化成一次一條</strong>了。</li>
+</ul>
+<p>換句話說，只有在「大量小 I&#x2F;O 同時打」的場景（例如高並發資料庫）才會明顯感覺到。對低並發、以序列小讀寫為主的服務來說，日常幾乎無感。<strong>拿深佇列隨機 IOPS 換「不再整台凍死、不用拔電」，對一台要穩定常駐的機器絕對划算。</strong></p>
+<blockquote>
+<p>完整的測試腳本與原始數據我一併放在本文同目錄：<code>ssd_bench.sh</code>、<code>bench_uas_baseline.txt</code>、<code>bench_bot_after.txt</code>。</p>
+</blockquote>
+<h2 id="更徹底的方案"><a href="#更徹底的方案" class="headerlink" title="更徹底的方案"></a>更徹底的方案</h2><p>如果很在意那 80% 的隨機 IOPS，或掉線仍偶發，<strong>最終解是把 M.2 NVMe 從 USB 轉接盒移到 Pi 5 官方的 NVMe HAT</strong>，走原生 PCIe，完全繞開 USB 橋接——穩定性與速度<strong>兩者都贏</strong>，隨機效能不但拿回來還更快。</p>
+<h2 id="加一層監控"><a href="#加一層監控" class="headerlink" title="加一層監控"></a>加一層監控</h2><p>修完不能只靠「感覺沒再當」。我寫了一個小腳本掛 cron 每 5 分鐘檢查一次：SSD 溫度（<code>smartctl -A</code>）、SoC 溫度與 throttle 旗標（<code>vcgencmd</code>）、SMART 健康、以及最近的 kernel USB&#x2F;儲存錯誤（掉線的前兆），任何異常就在日誌標上 <code>[WARN]</code> &#x2F; <code>[ALERT]</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/5 * * * * ~/ssd_monitor.sh &gt;/dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>正常時每行長這樣，之後要回頭查有沒有過熱或掉線，<code>grep</code> 一下 <code>WARN</code>&#x2F;<code>ALERT</code> 即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2026-08-22 21:32:44 [OK] ssd=36C soc=59.8C throttled=0x0 health=PASSED drv=usb-storage</span><br></pre></td></tr></table></figure>
+
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><ol>
+<li><strong>先分清楚是「斷線」還是「凍死」</strong>：看 journald 是否整個停止寫入、有沒有 shutdown 記錄，比什麼都關鍵。</li>
+<li><strong>用排除法縮小範圍</strong>：電源、溫度、OOM、panic、磁碟、SMART 一輪掃過。</li>
+<li><strong>root 在外接 USB SSD 上時，橋接晶片掉線會拖垮整台機器</strong>——RTL9210 + UAS 是已知雷區，<code>usb-storage.quirks=&lt;vid&gt;:&lt;pid&gt;:u</code> 是便宜有效的解法。</li>
+<li><strong>代價心裡有數</strong>：循序幾乎無損，深佇列隨機 IOPS 是主要犧牲；真要效能就上 NVMe HAT。</li>
+<li><strong>修完補上監控</strong>，用數據確認問題真的走了。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2026/08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/" data-id="cmt4h6o4h0005pwyy7yle41qm" data-title="Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/SSD/" rel="tag">SSD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2026/08/22/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/GIT/" rel="tag">GIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/REACT/" rel="tag">REACT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/RETRO/" rel="tag">RETRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/SSD/" rel="tag">SSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/VSCode/" rel="tag">VSCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/python/" rel="tag">python</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/AI/" style="font-size: 10px;">AI</a> <a href="/blog/tags/GIT/" style="font-size: 10px;">GIT</a> <a href="/blog/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/blog/tags/REACT/" style="font-size: 10px;">REACT</a> <a href="/blog/tags/RETRO/" style="font-size: 10px;">RETRO</a> <a href="/blog/tags/Raspberry-Pi/" style="font-size: 10px;">Raspberry Pi</a> <a href="/blog/tags/SSD/" style="font-size: 10px;">SSD</a> <a href="/blog/tags/Troubleshooting/" style="font-size: 20px;">Troubleshooting</a> <a href="/blog/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/blog/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/blog/tags/python/" style="font-size: 10px;">python</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2026/08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/">Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2026/08/22/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2026/07/09/ai/">AI 模型是不是越大越聰明？</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/27/how-to-use-git-tag/">How to Use Git Tag</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Jeffrey Cai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

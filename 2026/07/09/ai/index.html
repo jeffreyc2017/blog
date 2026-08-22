@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AI 模型是不是越大越聰明？ | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="很多人直覺上會覺得：AI 模型越大，參數越多，就一定越聰明。 這個判斷只對了一半。模型規模確實很重要，特別是在預訓練階段，更多參數、更多資料、更多算力通常能帶來更好的基礎能力。但到了今天，模型是否「聰明」已經不只看大小，還要看資料品質、架構設計、推理方法、工具使用能力，以及它被優化的任務場景。 換句話說，大模型不一定永遠贏；小模型也不一定只能做簡單任務。 為什麼「越大越聰明」不再夠用？早期大型語言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 模型是不是越大越聰明？">
+<meta property="og:url" content="https://jeffreyc2017.github.io/blog/2026/07/09/ai/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="很多人直覺上會覺得：AI 模型越大，參數越多，就一定越聰明。 這個判斷只對了一半。模型規模確實很重要，特別是在預訓練階段，更多參數、更多資料、更多算力通常能帶來更好的基礎能力。但到了今天，模型是否「聰明」已經不只看大小，還要看資料品質、架構設計、推理方法、工具使用能力，以及它被優化的任務場景。 換句話說，大模型不一定永遠贏；小模型也不一定只能做簡單任務。 為什麼「越大越聰明」不再夠用？早期大型語言">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-09T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-22T14:30:18.317Z">
+<meta property="article:author" content="Jeffrey Cai">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/blog/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jeffreyc2017.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ai" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2026/07/09/ai/" class="article-date">
+  <time class="dt-published" datetime="2026-07-09T00:00:00.000Z" itemprop="datePublished">2026-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AI 模型是不是越大越聰明？
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>很多人直覺上會覺得：AI 模型越大，參數越多，就一定越聰明。</p>
+<p>這個判斷只對了一半。模型規模確實很重要，特別是在預訓練階段，更多參數、更多資料、更多算力通常能帶來更好的基礎能力。但到了今天，模型是否「聰明」已經不只看大小，還要看資料品質、架構設計、推理方法、工具使用能力，以及它被優化的任務場景。</p>
+<p>換句話說，大模型不一定永遠贏；小模型也不一定只能做簡單任務。</p>
+<h2 id="為什麼「越大越聰明」不再夠用？"><a href="#為什麼「越大越聰明」不再夠用？" class="headerlink" title="為什麼「越大越聰明」不再夠用？"></a>為什麼「越大越聰明」不再夠用？</h2><p>早期大型語言模型的發展很依賴 scaling laws：模型越大、資料越多、訓練算力越高，整體表現往往越好。這仍然是基礎模型發展的重要規律，但它不是唯一規律。</p>
+<p>現在判斷一個模型強不強，至少要看下面幾件事。</p>
+<h3 id="1-資料品質比資料數量更關鍵"><a href="#1-資料品質比資料數量更關鍵" class="headerlink" title="1. 資料品質比資料數量更關鍵"></a>1. 資料品質比資料數量更關鍵</h3><p>一個 7B 參數的小模型，如果使用高品質、乾淨、結構良好的資料訓練，可能在特定任務上超過一個資料品質較差的 70B 模型。</p>
+<p>原因很直觀：模型不是單純「吃越多文字越好」，它會學到資料中的推理方式、語言習慣、錯誤模式和偏見。如果訓練資料裡有大量重複內容、低品質網頁、錯誤答案或機器生成垃圾，模型也會把這些缺陷吸收進去。</p>
+<p>所以近年的模型訓練越來越重視：</p>
+<ul>
+<li>資料清洗與去重</li>
+<li>高品質教科書、論文、程式碼與解題資料</li>
+<li>合成資料與人工驗證資料</li>
+<li>從強模型蒸餾出的高品質推理樣本</li>
+</ul>
+<h3 id="2-架構會影響「有效參數」"><a href="#2-架構會影響「有效參數」" class="headerlink" title="2. 架構會影響「有效參數」"></a>2. 架構會影響「有效參數」</h3><p>有些模型採用 MoE（Mixture of Experts，混合專家）架構。MoE 模型可以擁有非常多的總參數，但每次推理時只啟用其中一部分專家。</p>
+<p>這代表兩件事：</p>
+<ul>
+<li>模型的「總參數」不等於每次回答實際動用的「活躍參數」。</li>
+<li>一個模型可以在儲存上很大，但推理成本不一定等比例增加。</li>
+</ul>
+<p>例如 DeepSeek-V3 &#x2F; R1 系列公開資料顯示，它們是 671B 總參數的 MoE 模型，但每個 token 只啟用約 37B 參數。這種設計讓模型能兼顧容量與推理效率。</p>
+<h3 id="3-推理能力和知識量不是同一件事"><a href="#3-推理能力和知識量不是同一件事" class="headerlink" title="3. 推理能力和知識量不是同一件事"></a>3. 推理能力和知識量不是同一件事</h3><p>大模型通常有更強的知識覆蓋能力。它像一本更大的百科全書，能記住更多冷門事實、語言模式和跨領域資訊。</p>
+<p>但推理模型的進步改變了另一件事：模型可以用更多「思考時間」換取更好的解題能力。像 OpenAI o 系列、DeepSeek-R1 這類 reasoning model，重點不只是把答案背出來，而是在回答前產生更長的中間推理、檢查、修正和嘗試。</p>
+<p>這讓一些較小的模型在數學、程式碼、邏輯題等任務上，能接近甚至超過過去更大的通用模型。</p>
+<h3 id="4-小模型在邊緣裝置上越來越實用"><a href="#4-小模型在邊緣裝置上越來越實用" class="headerlink" title="4. 小模型在邊緣裝置上越來越實用"></a>4. 小模型在邊緣裝置上越來越實用</h3><p>手機、筆記型電腦和一般工作站已經可以執行 3B、7B、14B 甚至更大的量化模型。這些模型不一定適合處理所有問題，但在摘要、改寫、分類、簡單問答、程式輔助、個人知識庫檢索等任務上，已經很有實用價值。</p>
+<p>小模型的優勢包括：</p>
+<ul>
+<li>成本低</li>
+<li>延遲低</li>
+<li>可離線使用</li>
+<li>隱私更好</li>
+<li>可以針對特定任務微調</li>
+</ul>
+<p>它們的短板則是：</p>
+<ul>
+<li>冷門知識較弱</li>
+<li>長上下文能力通常較弱</li>
+<li>複雜任務穩定性不如前沿大模型</li>
+<li>容易在知識不足時產生幻覺</li>
+</ul>
+<h2 id="Claude、GPT-這類前沿模型到底有多大？"><a href="#Claude、GPT-這類前沿模型到底有多大？" class="headerlink" title="Claude、GPT 這類前沿模型到底有多大？"></a>Claude、GPT 這類前沿模型到底有多大？</h2><p>OpenAI、Anthropic 等公司通常不公開前沿閉源模型的參數量、架構細節、訓練資料和硬體配置。外界有很多推估，例如從 API 價格、推理延遲、晶片成本、論文線索或模型行為反推，但這些都不是官方數字。</p>
+<p>因此，像「某某模型有 9.7T 參數」、「某某 Claude 有 5T 參數」這種說法，要非常小心看待。它們可以作為市場傳聞或研究推測，但不適合寫成確定事實。</p>
+<p>比較穩健的說法是：</p>
+<ul>
+<li>前沿閉源模型的具體參數量通常未公開。</li>
+<li>它們可能使用非常大的 dense 或 MoE 架構，也可能結合多模型路由、工具使用、檢索系統和測試時計算。</li>
+<li>真正影響使用者體驗的，不只是參數量，還包括後訓練、對齊、推理策略、上下文長度、工具調用、系統工程和服務端路由。</li>
+</ul>
+<h2 id="模型檔案大小怎麼估算？"><a href="#模型檔案大小怎麼估算？" class="headerlink" title="模型檔案大小怎麼估算？"></a>模型檔案大小怎麼估算？</h2><p>如果只粗略估算模型權重大小，可以用下面的方式理解：</p>
+<ul>
+<li>FP16 &#x2F; BF16：每個參數約 2 bytes</li>
+<li>INT8：每個參數約 1 byte</li>
+<li>INT4：每個參數約 0.5 byte</li>
+</ul>
+<p>所以一個 7B 模型：</p>
+<ul>
+<li>FP16 約 14GB</li>
+<li>INT8 約 7GB</li>
+<li>INT4 約 3.5GB 到 5GB 左右，實際大小還會受格式、metadata、量化方法影響</li>
+</ul>
+<p>一個 14B 模型：</p>
+<ul>
+<li>FP16 約 28GB</li>
+<li>INT8 約 14GB</li>
+<li>INT4 約 7GB 到 9GB 左右</li>
+</ul>
+<p>這也是為什麼「10GB 以下」通常對應到 7B 或 14B 等級的量化模型，而不是完整未壓縮的大模型。</p>
+<h2 id="有沒有可能用-10GB-以下做出接近-Claude-Opus-的模型？"><a href="#有沒有可能用-10GB-以下做出接近-Claude-Opus-的模型？" class="headerlink" title="有沒有可能用 10GB 以下做出接近 Claude Opus 的模型？"></a>有沒有可能用 10GB 以下做出接近 Claude Opus 的模型？</h2><p>要看「接近」指的是什麼。</p>
+<p>如果指的是所有能力都等同於 Claude Opus 這類前沿閉源模型，那目前不現實。10GB 以下的小模型無法同時擁有同等級的百科知識、長上下文穩定性、多語能力、工具整合、複雜任務泛化能力和安全對齊。</p>
+<p>但如果只看特定任務，例如數學解題、程式碼補全、格式化輸出、客服分類、文件摘要、固定領域問答，那 10GB 以下的小模型完全可能接近甚至超過大型通用模型。</p>
+<p>關鍵在於三個技術方向。</p>
+<h3 id="1-用思考時間換模型體積"><a href="#1-用思考時間換模型體積" class="headerlink" title="1. 用思考時間換模型體積"></a>1. 用思考時間換模型體積</h3><p>推理模型會生成較長的中間推理，透過嘗試、檢查和修正提升答案品質。這有點像讓一個較小的模型多花一點時間做題，而不是要求它立刻反射式回答。</p>
+<p>這種方法在數學和程式任務上特別有效，因為答案可以被驗證：數學題有標準答案，程式碼可以跑測試，邏輯題可以檢查約束。</p>
+<h3 id="2-用知識蒸餾濃縮能力"><a href="#2-用知識蒸餾濃縮能力" class="headerlink" title="2. 用知識蒸餾濃縮能力"></a>2. 用知識蒸餾濃縮能力</h3><p>知識蒸餾的概念是讓強模型當老師，產生高品質解題過程、範例答案或任務資料，再讓小模型學習。</p>
+<p>小模型不需要重新讀完整個網路，也不需要自己摸索所有推理路徑。它可以直接學習強模型留下的解題痕跡。DeepSeek-R1 發布時，就同時開源了多個從 R1 蒸餾而來的小型 dense models，包含 1.5B、7B、8B、14B、32B、70B 等版本。</p>
+<h3 id="3-用量化降低硬體需求"><a href="#3-用量化降低硬體需求" class="headerlink" title="3. 用量化降低硬體需求"></a>3. 用量化降低硬體需求</h3><p>量化可以把模型權重從 FP16 壓到 INT8、INT4，讓模型更容易放進一般顯示卡或 Mac 的統一記憶體裡。</p>
+<p>不過量化不是免費午餐。壓得越狠，模型越可能出現精度下降、推理不穩、長上下文退化或特定任務能力受損。好的量化方法可以保留大部分能力，但不能保證所有模型、所有任務都維持同樣表現。</p>
+<h2 id="10GB-小模型適合什麼？"><a href="#10GB-小模型適合什麼？" class="headerlink" title="10GB 小模型適合什麼？"></a>10GB 小模型適合什麼？</h2><p>適合：</p>
+<ul>
+<li>個人離線助理</li>
+<li>文件摘要與改寫</li>
+<li>程式碼解釋與簡單除錯</li>
+<li>固定領域客服</li>
+<li>搭配 RAG 的知識庫問答</li>
+<li>資料抽取與格式化</li>
+<li>隱私敏感的本地工作流</li>
+</ul>
+<p>不太適合：</p>
+<ul>
+<li>需要大量冷門知識的開放問答</li>
+<li>超長文件的精準跨段推理</li>
+<li>高風險醫療、法律、金融決策</li>
+<li>需要穩定多步工具調用的複雜代理任務</li>
+<li>對錯誤容忍度很低的生產決策</li>
+</ul>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>AI 模型不是越大就一定越聰明。更準確的說法是：規模提供上限，但資料、架構、後訓練、推理策略和任務設計，決定模型能不能把這個上限發揮出來。</p>
+<p>大模型像一個知識面極廣、泛化能力強的專家團隊；小模型則像一個被訓練得很專精、反應很快、成本很低的助手。</p>
+<p>如果你要的是通用能力、長文本理解、跨領域穩定性，前沿大模型仍然有明顯優勢。<br>如果你要的是本地部署、低成本、隱私、固定任務和快速反應，小模型已經非常值得認真考慮。</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.08774">GPT-4 Technical Report</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2501.12948">DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2412.19437">DeepSeek-V3 Technical Report</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.15556">Training Compute-Optimal Large Language Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.02010">When Reasoning Meets Compression: Benchmarking Compressed Large Reasoning Models on Complex Reasoning Tasks</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2026/07/09/ai/" data-id="cmt4h6o460000pwyya0l5d7f2" data-title="AI 模型是不是越大越聰明？" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/AI/" rel="tag">AI</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2026/08/22/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2024/07/08/vscode_crash_after_update/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Resolving VSCode Crash After Update on macOS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/GIT/" rel="tag">GIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/REACT/" rel="tag">REACT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/RETRO/" rel="tag">RETRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/SSD/" rel="tag">SSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/VSCode/" rel="tag">VSCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/python/" rel="tag">python</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/AI/" style="font-size: 10px;">AI</a> <a href="/blog/tags/GIT/" style="font-size: 10px;">GIT</a> <a href="/blog/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/blog/tags/REACT/" style="font-size: 10px;">REACT</a> <a href="/blog/tags/RETRO/" style="font-size: 10px;">RETRO</a> <a href="/blog/tags/Raspberry-Pi/" style="font-size: 10px;">Raspberry Pi</a> <a href="/blog/tags/SSD/" style="font-size: 10px;">SSD</a> <a href="/blog/tags/Troubleshooting/" style="font-size: 20px;">Troubleshooting</a> <a href="/blog/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/blog/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/blog/tags/python/" style="font-size: 10px;">python</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2026/08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/">Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2026/08/22/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2026/07/09/ai/">AI 模型是不是越大越聰明？</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2024/05/27/how-to-use-git-tag/">How to Use Git Tag</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Jeffrey Cai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
