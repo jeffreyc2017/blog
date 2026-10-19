@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>老 MacBook Pro（Catalina）環境大掃除：zsh 啟動 1.2 秒 → 0.04 秒、磁碟多出 21GB | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="我有一台 2012 年的 MacBook Pro（i7-3540M、8GB RAM），系統停在它能升級的最後一版 macOS Catalina 10.15。這台機器陪我寫了十年程式，期間裝過 Anaconda、MacPorts、Homebrew、Android Studio、Xcode……每一樣都在 shell 設定和開機項目裡留下一點痕跡。最近連開個終端機都要頓一下，磁碟也只剩 53GB，於是決">
+<meta property="og:type" content="article">
+<meta property="og:title" content="老 MacBook Pro（Catalina）環境大掃除：zsh 啟動 1.2 秒 → 0.04 秒、磁碟多出 21GB">
+<meta property="og:url" content="https://jeffreyc2017.github.io/blog/2026/10/09/macbook-pro-catalina-environment-cleanup/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="我有一台 2012 年的 MacBook Pro（i7-3540M、8GB RAM），系統停在它能升級的最後一版 macOS Catalina 10.15。這台機器陪我寫了十年程式，期間裝過 Anaconda、MacPorts、Homebrew、Android Studio、Xcode……每一樣都在 shell 設定和開機項目裡留下一點痕跡。最近連開個終端機都要頓一下，磁碟也只剩 53GB，於是決">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-10-09T22:40:00.000Z">
+<meta property="article:modified_time" content="2026-10-19T06:19:45.119Z">
+<meta property="article:author" content="Jeffrey Cai">
+<meta property="article:tag" content="macOS">
+<meta property="article:tag" content="zsh">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="MacPorts">
+<meta property="article:tag" content="Optimization">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../../../../index.html" id="logo">Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="../../../../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../../../../archives/">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="../../../../atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jeffreyc2017.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-macbook-pro-catalina-environment-cleanup" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2026-10-09T22:40:00.000Z" itemprop="datePublished">2026-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      老 MacBook Pro（Catalina）環境大掃除：zsh 啟動 1.2 秒 → 0.04 秒、磁碟多出 21GB
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我有一台 2012 年的 MacBook Pro（i7-3540M、8GB RAM），系統停在它能升級的最後一版 macOS Catalina 10.15。這台機器陪我寫了十年程式，期間裝過 Anaconda、MacPorts、Homebrew、Android Studio、Xcode……每一樣都在 shell 設定和開機項目裡留下一點痕跡。最近連開個終端機都要頓一下，磁碟也只剩 53GB，於是決定好好整理一次。整個過程都是從另一台機器 <code>ssh</code> 進去完成的。</p>
+<h2 id="成果一覽"><a href="#成果一覽" class="headerlink" title="成果一覽"></a>成果一覽</h2><table>
+<thead>
+<tr>
+<th>項目</th>
+<th>優化前</th>
+<th>優化後</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zsh 啟動時間</td>
+<td>1.2 秒</td>
+<td>0.04 秒</td>
+</tr>
+<tr>
+<td>磁碟可用空間</td>
+<td>53 GB</td>
+<td>74 GB</td>
+</tr>
+<tr>
+<td>多餘的開機自啟服務</td>
+<td>26 個</td>
+<td>全部停用（可還原）</td>
+</tr>
+<tr>
+<td><code>python3</code> &#x2F; <code>pip3</code></td>
+<td>分屬 MacPorts &#x2F; Homebrew</td>
+<td>統一為 MacPorts 3.14</td>
+</tr>
+<tr>
+<td>shell 歷史紀錄上限</td>
+<td>1,000 筆（已在截斷）</td>
+<td>50,000 筆</td>
+</tr>
+<tr>
+<td>git</td>
+<td>Apple git 2.24，缺 git-lfs</td>
+<td>git 2.55 + git-lfs 3.5.1</td>
+</tr>
+</tbody></table>
+<h2 id="盤點前的小坑：ssh-進去-brew-竟然不存在？"><a href="#盤點前的小坑：ssh-進去-brew-竟然不存在？" class="headerlink" title="盤點前的小坑：ssh 進去 brew 竟然不存在？"></a>盤點前的小坑：ssh 進去 <code>brew</code> 竟然不存在？</h2><p>第一次執行 <code>ssh mbp &#39;brew --version&#39;</code> 得到 <code>command not found</code>，差點以為 Homebrew 壞了。其實是**非互動的 ssh 指令不會讀 <code>.zprofile</code>&#x2F;<code>.zshrc</code>**，PATH 只有 <code>/usr/bin:/bin:/usr/sbin:/sbin</code>。遠端檢查環境時要明確開一個 login + interactive shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh mbp <span class="string">&#x27;zsh -lic &quot;brew --version; command -v python3&quot;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>盤點下來，主要問題有這些：</p>
+<ul>
+<li>zsh 啟動要 1.2 秒。</li>
+<li>PATH 混雜：MacPorts、Homebrew、Python 2.7 framework 全都在裡面，還有 4 個早已不存在的目錄。</li>
+<li>Homebrew 和 MacPorts 有 <strong>222 個同名指令</strong>，誰生效全看 PATH 順序。</li>
+<li><code>python3</code> 和 <code>pip3</code> 不是同一個 Python。</li>
+<li>開機自啟一大堆：CleanMyMac 2、360、迅雷、搜狗、TeamViewer、MySQL……</li>
+<li>磁碟用了 92%。</li>
+</ul>
+<h2 id="一、zsh-啟動：1-2-秒-→-0-04-秒"><a href="#一、zsh-啟動：1-2-秒-→-0-04-秒" class="headerlink" title="一、zsh 啟動：1.2 秒 → 0.04 秒"></a>一、zsh 啟動：1.2 秒 → 0.04 秒</h2><h3 id="先量測，再用-zprof-找兇手"><a href="#先量測，再用-zprof-找兇手" class="headerlink" title="先量測，再用 zprof 找兇手"></a>先量測，再用 zprof 找兇手</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/time zsh -lic <span class="built_in">exit</span></span><br><span class="line"><span class="comment">#        1.20 real         0.50 user         0.87 sys</span></span><br></pre></td></tr></table></figure>
+
+<p>zsh 內建的 profiler 可以直接看出時間花在哪：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zsh -c <span class="string">&#x27;zmodload zsh/zprof; source ~/.zprofile; source ~/.zshrc; zprof&#x27;</span> | <span class="built_in">head</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">num  calls                time                       self            name</span><br><span class="line">-----------------------------------------------------------------------------------</span><br><span class="line"> 1)    1         608.43   608.43   93.16%    238.72   238.72   36.55%  nvm_auto</span><br><span class="line"> 2)    2         340.46   170.23   52.13%    190.12    95.06   29.11%  nvm</span><br><span class="line"> 3)    1         137.49   137.49   21.05%    121.73   121.73   18.64%  nvm_ensure_version_installed</span><br><span class="line"> 4)    2          32.37    16.19    4.96%     32.37    16.19    4.96%  compaudit</span><br><span class="line"> ...</span><br><span class="line"> 8)    1          44.61    44.61    6.83%     12.24    12.24    1.87%  compinit</span><br></pre></td></tr></table></figure>
+
+<p>**nvm 佔了 93%**。<code>source nvm.sh</code> 時它會自動執行 <code>nvm use default</code>，要解析版本別名、檢查安裝狀態，在這台老機器上要花 0.6 秒，而且每開一個終端機分頁都要付一次。</p>
+<h3 id="延遲載入-nvm"><a href="#延遲載入-nvm" class="headerlink" title="延遲載入 nvm"></a>延遲載入 nvm</h3><p>思路是：shell 啟動時只把 default 版本的 <code>bin</code> 目錄放進 PATH，<code>node</code>、<code>npm</code>、<code>npx</code> 立刻可用；真正的 <code>nvm</code> 函式等第一次被呼叫時才載入。</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;<span class="variable">$HOME</span>/.nvm&quot;</span></span><br><span class="line"><span class="function"><span class="title">nvm</span></span>() &#123;</span><br><span class="line">  <span class="built_in">unfunction</span> nvm</span><br><span class="line">  <span class="built_in">source</span> /opt/local/share/nvm/init-nvm.sh</span><br><span class="line">  nvm <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">() &#123;</span><br><span class="line">  <span class="built_in">local</span> v=$(&lt;<span class="variable">$NVM_DIR</span>/alias/default 2&gt;/dev/null)</span><br><span class="line">  <span class="built_in">local</span> -a bins=(<span class="variable">$NVM_DIR</span>/versions/node/v<span class="variable">$&#123;v#v&#125;</span>(|.*)/bin(Nn))</span><br><span class="line">  <span class="keyword">if</span> (( <span class="variable">$#bins</span> )); <span class="keyword">then</span></span><br><span class="line">    path=(<span class="variable">$bins</span>[-1] <span class="variable">$path</span>)</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="comment"># default 是 lts/* 之類的別名，無法直接解析，退回原本的載入方式</span></span><br><span class="line">    <span class="built_in">source</span> /opt/local/share/nvm/init-nvm.sh</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>幾個細節：</p>
+<ul>
+<li><code>~/.nvm/alias/default</code> 的內容是 <code>20</code>。glob <code>v20(|.*)</code> 只會匹配 <code>v20</code> 或 <code>v20.x.y</code>，不會誤中 <code>v200</code>。<code>(Nn)</code> 是 null-glob 加數字排序，<code>[-1]</code> 取最新的 patch 版。</li>
+<li>default 如果是 <code>lts/*</code>、<code>node</code> 這類別名就無法這樣解析，這時直接退回原本的載入方式，確保不會壞掉。</li>
+<li>之後執行 <code>nvm use &lt;版本&gt;</code> 時，nvm 會自己從 PATH 移除舊的 node 路徑再加上新的，不會殘留。</li>
+</ul>
+<p>我的 nvm 是用 MacPorts 安裝的，所以路徑是 <code>/opt/local/share/nvm/</code>；用官方腳本安裝的話，換成 <code>$NVM_DIR/nvm.sh</code> 即可。</p>
+<h3 id="順手修掉的幾件事"><a href="#順手修掉的幾件事" class="headerlink" title="順手修掉的幾件事"></a>順手修掉的幾件事</h3><p><strong>歷史紀錄被截斷</strong>：Catalina 的 <code>/etc/zshrc</code> 預設 <code>SAVEHIST=1000</code>，而我的 <code>.zsh_history</code> 已經 1015 行，舊紀錄早就在默默被丟掉了。</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">HISTSIZE=50000</span><br><span class="line">SAVEHIST=50000</span><br><span class="line"><span class="built_in">setopt</span> EXTENDED_HISTORY       <span class="comment"># 記錄時間戳</span></span><br><span class="line"><span class="built_in">setopt</span> INC_APPEND_HISTORY     <span class="comment"># 指令執行後立即寫入</span></span><br><span class="line"><span class="built_in">setopt</span> HIST_IGNORE_DUPS       <span class="comment"># 連續重複只記一次</span></span><br><span class="line"><span class="built_in">setopt</span> HIST_IGNORE_SPACE      <span class="comment"># 空格開頭的指令不記錄（適合含密碼的指令）</span></span><br><span class="line"><span class="built_in">setopt</span> HIST_REDUCE_BLANKS</span><br></pre></td></tr></table></figure>
+
+<p><strong>compinit 快取</strong>：<code>compinit</code> 每次啟動都會跑 <code>compaudit</code> 做權限檢查。改成 dump 檔超過 24 小時才做完整檢查，其餘時間用 <code>-C</code> 直接沿用：</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">autoload</span> -U <span class="function"><span class="title">compinit</span></span></span><br><span class="line">() &#123;</span><br><span class="line">  <span class="keyword">if</span> (( <span class="variable">$#</span> )); <span class="keyword">then</span></span><br><span class="line">    compinit &amp;&amp; <span class="built_in">touch</span> <span class="variable">$&#123;ZDOTDIR:-<span class="variable">$HOME</span>&#125;</span>/.zcompdump</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    compinit -C</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125; <span class="variable">$&#123;ZDOTDIR:-<span class="variable">$HOME</span>&#125;</span>/.zcompdump(N.mh+24)</span><br></pre></td></tr></table></figure>
+
+<p>這裡利用了「匿名函式的參數會先做 glob 展開」：<code>(N.mh+24)</code> 只在檔案超過 24 小時時才匹配，所以 <code>$#</code> 非零就代表該重建了。要 <code>touch</code> 是因為 compinit 在內容沒變時不會改寫 dump；不手動更新 mtime 的話，之後每次啟動都會走完整檢查。</p>
+<p><strong>PATH 去重、剔除不存在的目錄</strong>：放在 <code>.zshrc</code> 的最後兩行：</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">typeset</span> -U path</span><br><span class="line">path=($^path(N-/))</span><br></pre></td></tr></table></figure>
+
+<p><code>typeset -U</code> 讓 <code>path</code> 陣列自動去重。<code>$^path(N-/)</code> 對每個元素做 glob 檢查，只留下實際存在的目錄（<code>-/</code> 也接受指向目錄的 symlink）。這樣不必刪掉任何原有的 PATH 設定：那些已經搬走的工具目錄，哪天恢復了會自動回到 PATH。</p>
+<h3 id="安全地測試新設定"><a href="#安全地測試新設定" class="headerlink" title="安全地測試新設定"></a>安全地測試新設定</h3><p>直接覆蓋 <code>.zshrc</code>，萬一寫壞，下次登入可能連 shell 都開不起來。用 <code>ZDOTDIR</code> 指向暫存目錄，就能在不動正式設定的情況下完整測試：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /tmp/zt &amp;&amp; <span class="built_in">cp</span> ~/.zprofile /tmp/zt/ &amp;&amp; <span class="built_in">cp</span> new_zshrc /tmp/zt/.zshrc</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 1 2 3; <span class="keyword">do</span> /usr/bin/time <span class="built_in">env</span> ZDOTDIR=/tmp/zt zsh -lic <span class="built_in">exit</span>; <span class="keyword">done</span></span><br><span class="line">ZDOTDIR=/tmp/zt zsh -lic <span class="string">&#x27;node -v; nvm use 24; echo $PATH&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>結果穩定在 <strong>0.03～0.06 秒</strong>。（最後那行 <code>nvm use 24</code> 還順便炸出了另一個問題，見第三節。）</p>
+<h3 id="插曲：被-nvm-洩漏的-shell-選項"><a href="#插曲：被-nvm-洩漏的-shell-選項" class="headerlink" title="插曲：被 nvm 洩漏的 shell 選項"></a>插曲：被 nvm 洩漏的 shell 選項</h3><p>整理時我注意到 <code>setopt</code> 的輸出裡有 <code>nonomatch</code>，也就是 glob 沒有匹配時原樣傳遞，而不是報錯。我一開始以為是 nvm 載入時設的，就在延遲載入後補上了 <code>setopt nonomatch</code>，想「保留原本的行為」。後來寫這篇文章前重新驗證，才發現這個推論是錯的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zsh -fic <span class="string">&#x27;source nvm.sh; echo before: $(setopt | grep -c nonomatch)</span></span><br><span class="line"><span class="string">          nvm ls &gt;/dev/null; echo after-nvm-ls: $(setopt | grep -c nonomatch)&#x27;</span></span><br><span class="line"><span class="comment"># before: 0</span></span><br><span class="line"><span class="comment"># after-nvm-ls: 1</span></span><br></pre></td></tr></table></figure>
+
+<p>真正的來源是 nvm 的 <code>nvm_list_aliases()</code> 裡這一行：</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm_is_zsh &amp;&amp; <span class="built_in">unsetopt</span> local_options nomatch</span><br></pre></td></tr></table></figure>
+
+<p>作者的本意應該是「在這個函式內暫時關掉 nomatch」，但 <code>unsetopt local_options nomatch</code> 是**同時關掉 <code>LOCAL_OPTIONS</code> 和 <code>NOMATCH</code>**。<code>local_options</code> 自己被關掉了，函式返回時就不會還原，nomatch 的變更於是洩漏到整個 shell。正確寫法是 <code>setopt local_options nonomatch</code>，nvm 在別的函式裡就是這樣寫的。</p>
+<p>所以真相是：shell 剛啟動時 nomatch 是正常開啟的，只有在執行過 <code>nvm ls</code>、<code>nvm alias</code> 之後才會變成 nonomatch。我當初會看到它，正是因為那條檢查指令裡剛好跑了 <code>nvm ls</code>。最後我把多加的 <code>setopt nonomatch</code> 拿掉，維持 zsh 的預設行為。</p>
+<blockquote>
+<p>教訓：觀察 shell 狀態的指令，本身也可能改變狀態。</p>
+</blockquote>
+<h2 id="二、python3-和-pip3-不是同一個-Python"><a href="#二、python3-和-pip3-不是同一個-Python" class="headerlink" title="二、python3 和 pip3 不是同一個 Python"></a>二、python3 和 pip3 不是同一個 Python</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python3  /opt/local/bin/python3                              Python 3.14.7     ← MacPorts</span><br><span class="line">pip3     /usr/local/bin/pip3                                 pip (python 3.14) ← Homebrew</span><br><span class="line">pip      /Library/Frameworks/Python.framework/.../2.7/bin/pip pip (python 2.7)</span><br></pre></td></tr></table></figure>
+
+<p>兩邊版本號都是 3.14，很容易被騙過去。但 <code>pip3 install</code> 裝進的是 Homebrew Python 的 site-packages，<code>python3</code> 跑的卻是 MacPorts 的直譯器，於是出現經典的「明明裝了卻 <code>ModuleNotFoundError</code>」。<code>pip</code> 則更離譜，指向早已 EOL 的 Python 2.7。</p>
+<p>判斷這種錯配最快的方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 -c <span class="string">&#x27;import sys; print(sys.prefix)&#x27;</span></span><br><span class="line">pip3 -V        <span class="comment"># 看 &quot;from ...&quot; 後面的路徑是否在同一個 prefix 底下</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="統一到-MacPorts"><a href="#統一到-MacPorts" class="headerlink" title="統一到 MacPorts"></a>統一到 MacPorts</h3><p>Homebrew 早已不再為 Catalina 提供預編譯套件，什麼都得從原始碼編譯；MacPorts 則仍有 10.15 的預編譯套件。所以選 MacPorts 當主力：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> port install py314-pip</span><br><span class="line"><span class="built_in">sudo</span> port <span class="keyword">select</span> --<span class="built_in">set</span> pip  pip314</span><br><span class="line"><span class="built_in">sudo</span> port <span class="keyword">select</span> --<span class="built_in">set</span> pip3 pip314</span><br></pre></td></tr></table></figure>
+
+<p>MacPorts 的 python3.14 沒有放 PEP 668 的 <code>EXTERNALLY-MANAGED</code> 標記，所以 <code>pip install</code> 可以直接使用（專案開發還是建議用 venv）。</p>
+<h3 id="Python-2-7：移到-PATH-最後，而不是刪掉"><a href="#Python-2-7：移到-PATH-最後，而不是刪掉" class="headerlink" title="Python 2.7：移到 PATH 最後，而不是刪掉"></a>Python 2.7：移到 PATH 最後，而不是刪掉</h3><p>原本 <code>.zprofile</code> 把 <code>/Library/Frameworks/Python.framework/Versions/2.7/bin</code> 放在 PATH <strong>最前面</strong>。移除之前，先檢查有哪些指令只存在那個目錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">P=/opt/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> $(<span class="built_in">ls</span> /Library/Frameworks/Python.framework/Versions/2.7/bin); <span class="keyword">do</span></span><br><span class="line">  r=$(PATH=<span class="variable">$P</span> <span class="built_in">command</span> -v <span class="variable">$c</span>) &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$c</span> -&gt; <span class="variable">$r</span>&quot;</span> || <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$c</span> -&gt; (只存在 2.7 目錄)&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>結果 <code>python2</code>、<code>pip2</code> 等在 <code>/usr/local/bin</code> 都有連結，但 <code>bCNC</code>（CNC 控制軟體）、<code>bokeh</code>、<code>watchmedo</code> 等只存在於 2.7 目錄。所以改成<strong>放到 PATH 最後</strong>：</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="string">&quot;<span class="variable">$&#123;PATH&#125;</span>:/Library/Frameworks/Python.framework/Versions/2.7/bin&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>python</code>、<code>pip</code> 由 MacPorts 優先提供，2.7 專屬的工具也還能直接執行。</p>
+<h2 id="三、新版-Node-js-在-Catalina-上根本跑不起來"><a href="#三、新版-Node-js-在-Catalina-上根本跑不起來" class="headerlink" title="三、新版 Node.js 在 Catalina 上根本跑不起來"></a>三、新版 Node.js 在 Catalina 上根本跑不起來</h2><p>前面測試 <code>nvm use 24</code> 時出現了這個錯誤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dyld: Symbol not found: __ZNSt3__113basic_filebufIcNS_11char_traitsIcEEE4openEPKcj</span><br><span class="line">  Referenced from: ~/.nvm/versions/node/v24.16.0/bin/node (which was built for Mac OS X 13.5)</span><br><span class="line">  Expected in: /usr/lib/libc++.1.dylib</span><br></pre></td></tr></table></figure>
+
+<p>官方 Node 24 的 macOS binary 是針對 macOS 13.5 編譯的，用到了 Catalina 系統 libc++ 沒有的符號。逐一檢查已安裝的版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> v <span class="keyword">in</span> ~/.nvm/versions/node/*; <span class="keyword">do</span> <span class="built_in">printf</span> <span class="string">&quot;%s: &quot;</span> <span class="variable">$&#123;v##*/&#125;</span>; <span class="variable">$v</span>/bin/node -v 2&gt;&amp;1 | <span class="built_in">head</span> -1; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v20.15.0</td>
+<td>✅ 正常</td>
+</tr>
+<tr>
+<td>v23.11.1</td>
+<td>✅ 正常</td>
+</tr>
+<tr>
+<td>v24.16.0</td>
+<td>❌ dyld: Symbol not found</td>
+</tr>
+<tr>
+<td>v26.3.0</td>
+<td>❌ dyld: Symbol not found</td>
+</tr>
+</tbody></table>
+<p>更糟的是，nvm 的 <code>node</code>&#x2F;<code>stable</code> 別名會自動指向「已安裝的最新版」，也就是壞掉的 v26。用 <code>nvm uninstall</code> 移除 v24、v26 之後，別名自動回落到可用的 v23。</p>
+<blockquote>
+<p>nvm 安裝時不會檢查 binary 能否在當前系統上執行。在老系統上裝新版 Node 之前，最好先確認它支援的最低 macOS 版本。</p>
+</blockquote>
+<h2 id="四、開機自啟項目：停用-26-個"><a href="#四、開機自啟項目：停用-26-個" class="headerlink" title="四、開機自啟項目：停用 26 個"></a>四、開機自啟項目：停用 26 個</h2><h3 id="盤點"><a href="#盤點" class="headerlink" title="盤點"></a>盤點</h3><p>macOS 的自啟來源分散在好幾個地方：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> ~/Library/LaunchAgents /Library/LaunchAgents /Library/LaunchDaemons</span><br><span class="line">launchctl list | grep -v com.apple                  <span class="comment"># 目前已載入的第三方服務</span></span><br><span class="line">osascript -e <span class="string">&#x27;tell application &quot;System Events&quot; to get the name of every login item&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>結果相當可觀，分類處理如下：</p>
+<table>
+<thead>
+<tr>
+<th>類別</th>
+<th>項目</th>
+<th>處理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>過時軟體常駐</td>
+<td>CleanMyMac 2、360 安全、迅雷、百度網盤、搜狐影音、Steam 清理</td>
+<td>停用</td>
+</tr>
+<tr>
+<td>輸入法常駐</td>
+<td>搜狗（其實已經不在輸入來源清單裡）</td>
+<td>停用</td>
+</tr>
+<tr>
+<td>自動更新程式</td>
+<td>Adobe ARMDC、Google Updater、Java Updater、Paragon Updater</td>
+<td>停用</td>
+</tr>
+<tr>
+<td>開發 &#x2F; 遠端服務</td>
+<td>MySQL、TeamViewer、VirtualBox、Zoom、Intel HAXM</td>
+<td>停用（需要時手動開）</td>
+</tr>
+<tr>
+<td>必要元件</td>
+<td>網銀安全控制項、Paragon NTFS 驅動、smartd、XQuartz、Wireshark ChmodBPF</td>
+<td><strong>保留</strong></td>
+</tr>
+</tbody></table>
+<p>停用輸入法的服務之前，先確認它還有沒有在用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults <span class="built_in">read</span> com.apple.HIToolbox AppleEnabledInputSources | grep -E <span class="string">&quot;Bundle ID|Input Mode&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="用-launchctl-disable，不要刪-plist"><a href="#用-launchctl-disable，不要刪-plist" class="headerlink" title="用 launchctl disable，不要刪 plist"></a>用 <code>launchctl disable</code>，不要刪 plist</h3><p>很多教學會叫你直接刪掉或搬走 plist，但軟體更新時常常會把 plist 再寫回來。<code>launchctl disable</code> 是在 launchd 自己的資料庫裡加上「停用」標記，<strong>跟 plist 檔案無關</strong>，軟體重寫 plist 也不受影響；要還原只要 <code>enable</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用者 session 內的 agent（包含 /Library/LaunchAgents 裡的）</span></span><br><span class="line">launchctl <span class="built_in">disable</span> gui/$(<span class="built_in">id</span> -u)/&lt;label&gt;</span><br><span class="line">launchctl bootout gui/$(<span class="built_in">id</span> -u)/&lt;label&gt;     <span class="comment"># 立即停止</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 系統 daemon（/Library/LaunchDaemons）</span></span><br><span class="line"><span class="built_in">sudo</span> launchctl <span class="built_in">disable</span> system/&lt;label&gt;</span><br><span class="line"><span class="built_in">sudo</span> launchctl bootout system/&lt;label&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 確認</span></span><br><span class="line">launchctl print-disabled gui/$(<span class="built_in">id</span> -u)</span><br><span class="line"><span class="built_in">sudo</span> launchctl print-disabled system</span><br></pre></td></tr></table></figure>
+
+<p>兩個實用的細節：</p>
+<ul>
+<li><strong><code>/Library/LaunchAgents</code> 裡的 agent 雖然 plist 屬於 root，但它跑在使用者的 <code>gui/&lt;uid&gt;</code> domain，停用不需要 sudo</strong>。只有 <code>/Library/LaunchDaemons</code> 的才需要。</li>
+<li>迅雷、搜狐影音這類 App 用 <code>SMLoginItemSetEnabled</code> 註冊的登入項目，不在上面三個目錄裡，但一樣會出現在 <code>launchctl list</code>，也一樣可以用 <code>launchctl disable gui/&lt;uid&gt;/&lt;label&gt;</code> 停用。</li>
+</ul>
+<h3 id="坑：Label-不一定等於檔名"><a href="#坑：Label-不一定等於檔名" class="headerlink" title="坑：Label 不一定等於檔名"></a>坑：Label 不一定等於檔名</h3><p><code>launchctl</code> 吃的是 plist 裡的 <code>Label</code>，不是檔名。我用 PlistBuddy 逐一核對，果然抓到幾個不一樣的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> ~/Library/LaunchAgents/*.plist /Library/LaunchAgents/*.plist /Library/LaunchDaemons/*.plist; <span class="keyword">do</span></span><br><span class="line">  n=$(<span class="built_in">basename</span> <span class="string">&quot;<span class="variable">$f</span>&quot;</span> .plist)</span><br><span class="line">  l=$(/usr/libexec/PlistBuddy -c <span class="string">&quot;Print :Label&quot;</span> <span class="string">&quot;<span class="variable">$f</span>&quot;</span> 2&gt;/dev/null)</span><br><span class="line">  [[ <span class="string">&quot;<span class="variable">$n</span>&quot;</span> == <span class="string">&quot;<span class="variable">$l</span>&quot;</span> ]] || <span class="built_in">echo</span> <span class="string">&quot;檔名 <span class="variable">$n</span> → Label <span class="variable">$l</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>檔名</th>
+<th>實際 Label</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>com.teamviewer.teamviewer_service.plist</code></td>
+<td><code>com.teamviewer.service</code></td>
+</tr>
+<tr>
+<td><code>com.teamviewer.teamviewer_desktop.plist</code></td>
+<td><code>com.teamviewer.desktop</code></td>
+</tr>
+<tr>
+<td><code>org.virtualbox.vboxwebsrv.plist</code></td>
+<td><code>org.virtualbox.vboxwebsvc</code></td>
+</tr>
+</tbody></table>
+<p>拿檔名去 disable 等於停錯對象，服務照樣開機啟動。另外也發現 Google Keystone 的三個 plist 已經是空檔，Java Helper-Tool 則是指向不存在檔案的失效 symlink。launchd 根本不會載入它們，不需要處理。</p>
+<h3 id="寫成可還原的腳本"><a href="#寫成可還原的腳本" class="headerlink" title="寫成可還原的腳本"></a>寫成可還原的腳本</h3><p>需要 sudo 的部分整理成腳本，並內建 <code>--restore</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 停用：sudo bash startup-cleanup.sh</span></span><br><span class="line"><span class="comment"># 還原：sudo bash startup-cleanup.sh --restore（重開機後生效）</span></span><br><span class="line">[[ <span class="variable">$EUID</span> -eq 0 ]] || &#123; <span class="built_in">echo</span> <span class="string">&quot;請用 sudo 執行&quot;</span>; <span class="built_in">exit</span> 1; &#125;</span><br><span class="line">U=gui/<span class="variable">$&#123;SUDO_UID:-501&#125;</span></span><br><span class="line"></span><br><span class="line">GUI=( com.macpaw.CleanMyMac2Helper.scheduledScan com.xunlei.Thunder.ThunderHelper</span><br><span class="line">      com.teamviewer.teamviewer com.teamviewer.desktop org.virtualbox.vboxwebsvc  <span class="comment"># …略</span></span><br><span class="line">)</span><br><span class="line">SYS=( com.macpaw.CleanMyMac2.Agent com.qihoo.360safe.daemon com.thunder.ASDaemonService</span><br><span class="line">      com.oracle.oss.mysql.mysqld com.teamviewer.service us.zoom.ZoomDaemon  <span class="comment"># …略</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$&#123;1:-&#125;</span> == --restore ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">for</span> l <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;GUI[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> launchctl <span class="built_in">enable</span> <span class="string">&quot;<span class="variable">$U</span>/<span class="variable">$l</span>&quot;</span>; <span class="keyword">done</span></span><br><span class="line">  <span class="keyword">for</span> l <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;SYS[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> launchctl <span class="built_in">enable</span> <span class="string">&quot;system/<span class="variable">$l</span>&quot;</span>; <span class="keyword">done</span></span><br><span class="line">  <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;GUI[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> launchctl <span class="built_in">disable</span> <span class="string">&quot;<span class="variable">$U</span>/<span class="variable">$l</span>&quot;</span>; launchctl bootout <span class="string">&quot;<span class="variable">$U</span>/<span class="variable">$l</span>&quot;</span> 2&gt;/dev/null; <span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;SYS[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> launchctl <span class="built_in">disable</span> <span class="string">&quot;system/<span class="variable">$l</span>&quot;</span>; launchctl bootout <span class="string">&quot;system/<span class="variable">$l</span>&quot;</span> 2&gt;/dev/null; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>用 <code>SUDO_UID</code> 是為了在 sudo 底下仍能找到原本使用者的 gui domain。</p>
+<h3 id="重開機驗證"><a href="#重開機驗證" class="headerlink" title="重開機驗證"></a>重開機驗證</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">launchctl list | grep -iE <span class="string">&quot;sogou|macpaw|thunder|teamviewer|vbox&quot;</span>   <span class="comment"># 應該沒有輸出</span></span><br><span class="line">kextstat | grep -iE <span class="string">&quot;virtualbox|haxm&quot;</span>                               <span class="comment"># 核心擴充也不該載入</span></span><br></pre></td></tr></table></figure>
+
+<p>重開機後 26 個項目一個都沒有回來，開機後的可用記憶體是 83%。</p>
+<h2 id="五、磁碟：53GB-→-74GB"><a href="#五、磁碟：53GB-→-74GB" class="headerlink" title="五、磁碟：53GB → 74GB"></a>五、磁碟：53GB → 74GB</h2><p>先找出大戶：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~ &amp;&amp; <span class="built_in">du</span> -sh Library/Caches Library/Developer/CoreSimulator/* Library/Developer/Xcode/* \</span><br><span class="line">  .npm .gradle .nvm /usr/local/Cellar /opt/local 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>大小</th>
+<th>清理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iOS 模擬器裝置</td>
+<td>15 GB</td>
+<td><code>xcrun simctl delete all</code>（Xcode 會自動重建空裝置）</td>
+</tr>
+<tr>
+<td>模擬器 dyld 快取</td>
+<td>4.9 GB</td>
+<td>刪除 <code>~/Library/Developer/CoreSimulator/Caches/*</code></td>
+</tr>
+<tr>
+<td>Homebrew 快取、日誌、舊 portable-ruby</td>
+<td>1.1 GB</td>
+<td><code>brew cleanup --prune=all</code></td>
+</tr>
+<tr>
+<td>pip 快取</td>
+<td>1 GB</td>
+<td><code>pip3 cache purge</code></td>
+</tr>
+<tr>
+<td>無法執行的 Node v24 &#x2F; v26</td>
+<td>416 MB</td>
+<td><code>nvm uninstall</code></td>
+</tr>
+<tr>
+<td>MacPorts 舊版本（64 個）</td>
+<td>—</td>
+<td><code>sudo port uninstall inactive</code></td>
+</tr>
+</tbody></table>
+<p>幾個注意點：</p>
+<ul>
+<li><code>brew cleanup</code> 先用 <code>-n</code> 做 dry-run 看清單，確認沒有動到 <code>Cellar</code> 裡正在使用的版本。</li>
+<li>MacPorts 每次升級都會把舊版留著（inactive），不清的話會越積越多。我這邊光 <code>sqlite3</code> 就留了 3 個舊版。</li>
+<li><strong>APFS 釋放空間是非同步的</strong>：刪掉 15GB 的模擬器後，<code>df</code> 只多了 3GB，幾分鐘後才陸續回來。如果一直沒回來，檢查是不是被 Time Machine 本機快照佔住：<code>tmutil listlocalsnapshots /</code>。</li>
+</ul>
+<p><code>~/Downloads</code> 還有 135GB，不過那是個人檔案，留給自己慢慢整理。</p>
+<h2 id="六、git-lfs：Catalina-上的版本陷阱"><a href="#六、git-lfs：Catalina-上的版本陷阱" class="headerlink" title="六、git-lfs：Catalina 上的版本陷阱"></a>六、git-lfs：Catalina 上的版本陷阱</h2><p><code>.gitconfig</code> 裡設了 <code>filter.lfs.required = true</code>，git-lfs 卻根本沒裝，clone 任何用到 LFS 的 repo 都會在 checkout 時失敗。</p>
+<h3 id="MacPorts-編不起來"><a href="#MacPorts-編不起來" class="headerlink" title="MacPorts 編不起來"></a>MacPorts 編不起來</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> port install git-lfs</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go: go.mod requires go &gt;= 1.25.0 (running go 1.24.13; GOTOOLCHAIN=local)</span><br><span class="line">make: *** [commands/mancontent_gen.go] Error 1</span><br></pre></td></tr></table></figure>
+
+<p>git-lfs 3.8 需要 Go 1.25，但 MacPorts 在 Catalina 上只提供到 Go 1.24。</p>
+<h3 id="改用官方的舊版-binary"><a href="#改用官方的舊版-binary" class="headerlink" title="改用官方的舊版 binary"></a>改用官方的舊版 binary</h3><p>上游 Go 從 1.23 起要求 macOS 11，所以要找用較舊 Go 編譯的 git-lfs 版本。v3.5.1 是用 Go 1.21.7 編譯的，下載後先驗證 checksum：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">V=v3.5.1</span><br><span class="line">curl -fsSLO https://github.com/git-lfs/git-lfs/releases/download/<span class="variable">$V</span>/git-lfs-darwin-amd64-<span class="variable">$V</span>.zip</span><br><span class="line">curl -fsSLO https://github.com/git-lfs/git-lfs/releases/download/<span class="variable">$V</span>/sha256sums.asc</span><br><span class="line">grep <span class="string">&quot;git-lfs-darwin-amd64-<span class="variable">$V</span>.zip&quot;</span> sha256sums.asc | shasum -a 256 -c -</span><br><span class="line">unzip -q git-lfs-darwin-amd64-<span class="variable">$V</span>.zip</span><br><span class="line">./git-lfs-3.5.1/git-lfs version</span><br><span class="line"><span class="comment"># git-lfs/3.5.1 (GitHub; darwin amd64; go 1.21.7; git e237bb3a)</span></span><br><span class="line">install -m 755 git-lfs-3.5.1/git-lfs /usr/local/bin/git-lfs</span><br></pre></td></tr></table></figure>
+
+<p><code>sha256sums.asc</code> 本身有 PGP 簽章，要更嚴謹的話可以再用 <code>gpg</code> 驗證。</p>
+<p>有趣的是，<code>otool -l</code> 顯示這個 binary 的 <code>minos</code> 是 12.0，但它在 10.15 上照樣能跑。<strong>binary 標註的最低版本不一定等於實際需求，以實測為準。</strong></p>
+<p>用一個本機 repo 做來回測試，確認 clean 和 smudge 兩個方向都正常：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git init -q src &amp;&amp; <span class="built_in">cd</span> src</span><br><span class="line">git lfs track <span class="string">&quot;*.bin&quot;</span> &amp;&amp; <span class="built_in">head</span> -c 100000 /dev/urandom &gt; a.bin</span><br><span class="line">git add .gitattributes a.bin &amp;&amp; git commit -qm <span class="built_in">test</span></span><br><span class="line">git cat-file -p HEAD:a.bin | <span class="built_in">head</span> -1     <span class="comment"># version https://git-lfs.github.com/spec/v1 → 存進去的是指標</span></span><br><span class="line"><span class="built_in">cd</span> .. &amp;&amp; git <span class="built_in">clone</span> -q file://<span class="variable">$PWD</span>/src dst &amp;&amp; cmp src/a.bin dst/a.bin &amp;&amp; <span class="built_in">echo</span> OK</span><br></pre></td></tr></table></figure>
+
+<h3 id="意外收穫與清理"><a href="#意外收穫與清理" class="headerlink" title="意外收穫與清理"></a>意外收穫與清理</h3><p>那次失敗的 <code>port install git-lfs</code> 並非全無作用：它先把依賴的 <strong>git 2.55</strong> 裝好了。<code>/opt/local/bin</code> 在 PATH 上排在 <code>/usr/bin</code> 前面，所以 <code>git</code> 直接從 Apple 的 2.24 升級到 2.55。MacPorts 的 git 預設用 <code>osxkeychain</code> 當 credential helper，已存的帳密照常可用。</p>
+<p>不過它也留下了 go、asciidoctor、ronn-ng 這些只在建置時用得到的東西。用 <code>leaves</code> 可以找出「沒被任何套件依賴、也不是自己要求安裝」的 port：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">port installed leaves</span><br><span class="line"><span class="built_in">sudo</span> port setrequested git        <span class="comment"># 標記 git 是我要的，避免被當成孤兒清掉</span></span><br><span class="line"><span class="built_in">sudo</span> port -N uninstall --follow-dependencies go asciidoctor rb33-ronn-ng</span><br></pre></td></tr></table></figure>
+
+<p><code>--follow-dependencies</code> 會順便移除因此變成孤兒的依賴，這次連 MacPorts 版的 autoconf、automake 也被帶走了。好在 Homebrew 也有提供，指令仍然可用；但清理之前最好先確認會不會有這種連鎖反應。</p>
+<h2 id="還沒做的：Homebrew-與-MacPorts-二選一"><a href="#還沒做的：Homebrew-與-MacPorts-二選一" class="headerlink" title="還沒做的：Homebrew 與 MacPorts 二選一"></a>還沒做的：Homebrew 與 MacPorts 二選一</h2><p>兩套套件管理器有 222 個同名指令，誰生效完全取決於 PATH 順序，這次的 python&#x2F;pip 錯配就是這樣來的。長期來看應該只留一套；在 Catalina 上，還有預編譯套件可用的 MacPorts 是比較實際的選擇。這是個大工程，留待下次。</p>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><ol>
+<li><strong>先量測再優化</strong>：<code>/usr/bin/time zsh -lic exit</code> 加上 <code>zprof</code>，一眼就看出 93% 的時間耗在 nvm。</li>
+<li><strong>延遲載入是 shell 提速最有效的手段</strong>：PATH 先放好，重量級的初始化等真的用到再做。</li>
+<li><strong>改設定前用 <code>ZDOTDIR</code> 在暫存目錄測試</strong>，不會把自己鎖在 shell 外面。</li>
+<li>**對照 <code>python3 -c &#39;import sys; print(sys.prefix)&#39;</code> 和 <code>pip3 -V</code>**，三秒就能抓出 pip 錯配。</li>
+<li>**停用開機項目用 <code>launchctl disable</code>**：不刪檔、不怕軟體重寫 plist、可以還原。記得核對 Label；<code>/Library/LaunchAgents</code> 的項目停用不需要 sudo。</li>
+<li><strong>老系統上的新版軟體一定要實測</strong>：Node 24 報 dyld 錯誤、git-lfs 3.8 編不過，都是 Catalina 落後的現實；反過來，標著 minos 12.0 的 binary 卻能跑。</li>
+<li><strong>觀察狀態的指令也可能改變狀態</strong>：nvm 的 <code>unsetopt local_options nomatch</code> 讓我一度誤判了 shell 的原始設定。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2026/10/09/macbook-pro-catalina-environment-cleanup/" data-id="cmvev751f000cms0c7vj00b9n" data-title="老 MacBook Pro（Catalina）環境大掃除：zsh 啟動 1.2 秒 → 0.04 秒、磁碟多出 21GB" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/MacPorts/" rel="tag">MacPorts</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Node-js/" rel="tag">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Optimization/" rel="tag">Optimization</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/macOS/" rel="tag">macOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/zsh/" rel="tag">zsh</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../../../08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/GIT/" rel="tag">GIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/MacPorts/" rel="tag">MacPorts</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Minecraft-Server/" rel="tag">Minecraft Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/REACT/" rel="tag">REACT</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/RETRO/" rel="tag">RETRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/SSD/" rel="tag">SSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/VSCode/" rel="tag">VSCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/zsh/" rel="tag">zsh</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/AI/" style="font-size: 10px;">AI</a> <a href="../../../../tags/GIT/" style="font-size: 10px;">GIT</a> <a href="../../../../tags/Linux/" style="font-size: 10px;">Linux</a> <a href="../../../../tags/MacPorts/" style="font-size: 10px;">MacPorts</a> <a href="../../../../tags/Minecraft-Server/" style="font-size: 10px;">Minecraft Server</a> <a href="../../../../tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="../../../../tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="../../../../tags/REACT/" style="font-size: 10px;">REACT</a> <a href="../../../../tags/RETRO/" style="font-size: 10px;">RETRO</a> <a href="../../../../tags/Raspberry-Pi/" style="font-size: 10px;">Raspberry Pi</a> <a href="../../../../tags/SSD/" style="font-size: 10px;">SSD</a> <a href="../../../../tags/Troubleshooting/" style="font-size: 20px;">Troubleshooting</a> <a href="../../../../tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="../../../../tags/macOS/" style="font-size: 20px;">macOS</a> <a href="../../../../tags/python/" style="font-size: 10px;">python</a> <a href="../../../../tags/zsh/" style="font-size: 10px;">zsh</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2026/10/">October 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="">老 MacBook Pro（Catalina）環境大掃除：zsh 啟動 1.2 秒 → 0.04 秒、磁碟多出 21GB</a>
+          </li>
+        
+          <li>
+            <a href="../../../08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/">Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復</a>
+          </li>
+        
+          <li>
+            <a href="../../../07/09/ai/">AI 模型是不是越大越聰明？</a>
+          </li>
+        
+          <li>
+            <a href="../../../../2024/09/16/how-to-set-up-minecraft-server-at-home/">How to Set Up Minecraft Server At Home And Expose It To Public</a>
+          </li>
+        
+          <li>
+            <a href="../../../../2024/07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Jeffrey Cai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives/" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="../../../../js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="../../../../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

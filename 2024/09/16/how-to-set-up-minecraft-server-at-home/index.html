@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>How to Set Up Minecraft Server At Home And Expose It To Public | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="我把 Minecraft Java 版伺服器放在家裡的電腦上，朋友從外網用一個固定的公網位址就能連進來。伺服器跑在虛擬機裡的 Docker 中，跟日常使用的系統隔開。外網那一端只放一台很小的 AWS 機器，負責把連接埠轉回家。遊戲行程和世界存檔都留在家裡。 這篇只涵蓋 Java 版。Java 版走 TCP 25565，反向 SSH 隧道轉得動。基岩版（Bedrock）走的是 UDP，同一條隧道轉不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Set Up Minecraft Server At Home And Expose It To Public">
+<meta property="og:url" content="https://jeffreyc2017.github.io/blog/2024/09/16/how-to-set-up-minecraft-server-at-home/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="我把 Minecraft Java 版伺服器放在家裡的電腦上，朋友從外網用一個固定的公網位址就能連進來。伺服器跑在虛擬機裡的 Docker 中，跟日常使用的系統隔開。外網那一端只放一台很小的 AWS 機器，負責把連接埠轉回家。遊戲行程和世界存檔都留在家裡。 這篇只涵蓋 Java 版。Java 版走 TCP 25565，反向 SSH 隧道轉得動。基岩版（Bedrock）走的是 UDP，同一條隧道轉不">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-16T18:22:03.000Z">
+<meta property="article:modified_time" content="2026-10-19T06:19:45.119Z">
+<meta property="article:author" content="Jeffrey Cai">
+<meta property="article:tag" content="Minecraft Server">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../../../../index.html" id="logo">Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="../../../../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../../../../archives/">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="../../../../atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jeffreyc2017.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-how-to-set-up-minecraft-server-at-home" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2024-09-16T18:22:03.000Z" itemprop="datePublished">2024-09-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      How to Set Up Minecraft Server At Home And Expose It To Public
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我把 Minecraft Java 版伺服器放在家裡的電腦上，朋友從外網用一個固定的公網位址就能連進來。伺服器跑在虛擬機裡的 Docker 中，跟日常使用的系統隔開。外網那一端只放一台很小的 AWS 機器，負責把連接埠轉回家。遊戲行程和世界存檔都留在家裡。</p>
+<p>這篇只涵蓋 <strong>Java 版</strong>。Java 版走 TCP 25565，反向 SSH 隧道轉得動。基岩版（Bedrock）走的是 UDP，同一條隧道轉不了。下面的遊戲版本和 AWS 免費額度，以 2026 年 10 月的情況來寫。</p>
+<h2 id="最後長這樣"><a href="#最後長這樣" class="headerlink" title="最後長這樣"></a>最後長這樣</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">朋友的 Minecraft 客戶端</span><br><span class="line">        │  TCP 25565</span><br><span class="line">        ▼</span><br><span class="line">AWS EC2（公網 IP，只轉流量）</span><br><span class="line">        │  反向 SSH，由家裡主動連出</span><br><span class="line">        ▼</span><br><span class="line">家裡電腦上的虛擬機</span><br><span class="line">        │  127.0.0.1:25565</span><br><span class="line">        ▼</span><br><span class="line">Docker 裡的 Minecraft Java 伺服器</span><br></pre></td></tr></table></figure>
+
+<p>家裡的虛擬機開機後自己連去 AWS。連線是從家裡打出去的，所以家用路由器不用做任何連接埠轉發，電信把用戶放在 CGNAT 後面也沒關係。朋友連的是 AWS 的位址。世界存檔留在家裡的硬碟上。</p>
+<h2 id="比較過的幾種做法"><a href="#比較過的幾種做法" class="headerlink" title="比較過的幾種做法"></a>比較過的幾種做法</h2><table>
+<thead>
+<tr>
+<th>做法</th>
+<th>它解決什麼</th>
+<th>卡在哪</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Port mapping（連接埠轉發）</td>
+<td>路由器把外網的 25565 轉到家裡某台電腦</td>
+<td>很多家用線路沒有真正的公網 IP，外面連不進來。連得進來時，家裡的連接埠也直接暴露在外網，IP 一變朋友存的位址就失效</td>
+</tr>
+<tr>
+<td>Virtual Server（虛擬伺服器）</td>
+<td>同上。這是不少家用路由器韌體裡的名字，背後還是連接埠轉發</td>
+<td>跟 Port mapping 是同一件事</td>
+</tr>
+<tr>
+<td>DDNS</td>
+<td>給會變的家用 IP 一個固定網域名稱</td>
+<td>只解決「位址會變」。連不進家裡、以及家裡連接埠對外開放，兩件事都還在</td>
+</tr>
+<tr>
+<td>Reverse SSH tunnel（反向 SSH 隧道）</td>
+<td>家裡主動連上一台有公網 IP 的小機器，由那台機器代收 25565</td>
+<td>多一台常開的小機器，以及它的公網 IPv4 費用</td>
+</tr>
+</tbody></table>
+<p>我用反向 SSH 隧道。家裡沒有穩定的公網 IP，也不想為了一台遊戲伺服器去改路由器、把家裡網路露出去。</p>
+<h2 id="為什麼外面只放一台小機器"><a href="#為什麼外面只放一台小機器" class="headerlink" title="為什麼外面只放一台小機器"></a>為什麼外面只放一台小機器</h2><p>Minecraft 吃 CPU 和記憶體的地方在家裡。AWS 上那台機器只轉 TCP，<code>t2.micro</code>（1 vCPU、1 GiB 記憶體）就夠。它不跑 Java，也不存世界。</p>
+<p>免費額度要看帳號是什麼時候開的，以 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-free-tier-usage.html">AWS 文件</a> 為準：</p>
+<table>
+<thead>
+<tr>
+<th>帳號開立時間</th>
+<th>額度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2025-07-15 之前</td>
+<td>開通後 12 個月。每個月 750 小時的 <code>t2.micro</code> 或 <code>t3.micro</code>，以及搭配 EC2、使用中的公網 IPv4 750 小時</td>
+</tr>
+<tr>
+<td>2025-07-15 當日或之後</td>
+<td>改成點數制，最高約 200 美元，用完或滿 6 個月為止。主機要選當時標成 free tier eligible 的機型，新帳號通常是 <code>t3.micro</code> 這一代，不一定還有 <code>t2.micro</code></td>
+</tr>
+</tbody></table>
+<p>公網 IPv4 從 2024-02-01 起每小時 0.005 美元，一個位址全月大約 3.65 美元。舊額度的 750 小時通常蓋得住「掛在一台運行中的 EC2 上的那一個位址」。下面兩種情況會計入帳單：</p>
+<ul>
+<li>執行個體停了，Elastic IP 還掛在上面</li>
+<li>帳號裡另外躺著沒在用的 Elastic IP</li>
+</ul>
+<p>這台跳板要一直開著。朋友存的是它的位址，機關掉，伺服器就從外網消失。</p>
+<p>任何有公網 IPv4 的小 VPS 都能擔任同一個角色。後面的 SSH 設定不依賴 AWS。</p>
+<h2 id="家裡：用虛擬機把伺服器隔開"><a href="#家裡：用虛擬機把伺服器隔開" class="headerlink" title="家裡：用虛擬機把伺服器隔開"></a>家裡：用虛擬機把伺服器隔開</h2><p>Minecraft、Docker、以及連去 AWS 的金鑰都放在虛擬機裡。宿主機不開 25565，也不持有那把隧道金鑰。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>VirtualBox</th>
+<th>VMware Workstation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>取得方式</td>
+<td>直接安裝</td>
+<td>個人使用曾改為免費，授權條件時有變動，安裝前看一次目前條款</td>
+</tr>
+<tr>
+<td>沒有桌面時怎麼跑</td>
+<td><code>VBoxManage startvm &quot;minecraft&quot; --type headless</code></td>
+<td>有自己的 headless 模式</td>
+</tr>
+<tr>
+<td>這次的需求</td>
+<td>客體要能主動連出外網</td>
+<td>同左</td>
+</tr>
+</tbody></table>
+<p>我用 VirtualBox。客體用 <strong>NAT</strong> 就夠了：隧道是虛擬機自己連出去，VirtualBox 不用做連接埠轉發。</p>
+<p>客體我裝 Ubuntu Server LTS，給它：</p>
+<ul>
+<li>2 顆 vCPU</li>
+<li>4 GB 記憶體（下面的 Java 堆疊用 2 GB，剩下留給系統和容器）</li>
+<li>30 GB 虛擬磁碟（世界和備份都放這裡，地圖大了再加）</li>
+</ul>
+<p>宿主機開機後要把這台虛擬機以 headless 拉起來，裡面的 systemd 才會接著跑。Linux 宿主上就是開機時執行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage startvm <span class="string">&quot;minecraft&quot;</span> --<span class="built_in">type</span> headless</span><br></pre></td></tr></table></figure>
+
+<h2 id="虛擬機裡用-Docker-跑伺服器"><a href="#虛擬機裡用-Docker-跑伺服器" class="headerlink" title="虛擬機裡用 Docker 跑伺服器"></a>虛擬機裡用 Docker 跑伺服器</h2><p>Docker 負責三件事：Java 版本不用自己管、世界資料放在一個目錄裡、升級時拉新映像再重建容器。</p>
+<p>映像用 <a target="_blank" rel="noopener" href="https://github.com/itzg/docker-minecraft-server">itzg&#x2F;minecraft-server</a>。先在客體裝 Docker Engine 和 Compose 外掛，步驟以 <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/ubuntu/">Docker 的 Ubuntu 安裝說明</a> 為準，重點是最後要有 <code>docker compose</code> 這條指令，以及把使用者加入 <code>docker</code> 群組：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> usermod -aG docker <span class="string">&quot;<span class="variable">$USER</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>登出再登入，群組才會生效。</p>
+<p>在家目錄建一個目錄，寫入 <code>compose.yaml</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/minecraft</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ~/minecraft/compose.yaml</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">mc:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">itzg/minecraft-server</span></span><br><span class="line">    <span class="attr">tty:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">stdin_open:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="comment"># 只聽虛擬機自己。外面進來的路是下一節的 SSH 隧道。</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;127.0.0.1:25565:25565&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">EULA:</span> <span class="string">&quot;TRUE&quot;</span></span><br><span class="line">      <span class="attr">TYPE:</span> <span class="string">PAPER</span></span><br><span class="line">      <span class="comment"># 改成朋友客戶端主畫面左下角的版本。兩邊不一致就會被踢出。</span></span><br><span class="line">      <span class="comment"># 26.3 是 2026-09 的 Java 正式版。</span></span><br><span class="line">      <span class="attr">VERSION:</span> <span class="string">&quot;26.3&quot;</span></span><br><span class="line">      <span class="attr">MEMORY:</span> <span class="string">&quot;2G&quot;</span></span><br><span class="line">      <span class="attr">ENABLE_RCON:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">      <span class="attr">RCON_PASSWORD:</span> <span class="string">&quot;replace-with-a-long-password&quot;</span></span><br><span class="line">      <span class="attr">TZ:</span> <span class="string">&quot;Asia/Taipei&quot;</span></span><br><span class="line">      <span class="attr">MOTD:</span> <span class="string">&quot;home&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data:/data</span></span><br></pre></td></tr></table></figure>
+
+<p><code>EULA: &quot;TRUE&quot;</code> 是在接受 <a target="_blank" rel="noopener" href="https://www.minecraft.net/en-us/eula">Minecraft EULA</a>。不設的話容器會直接退出。這份 EULA 不允許靠伺服器本身向玩家收費；這裡是朋友一起玩的私人伺服器。</p>
+<p><code>TYPE: PAPER</code> 用的是 Paper。同樣的視距，它比官方伺服器省 CPU。想改回官方伺服器，拿掉 <code>TYPE</code> 這行即可，預設是 <code>VANILLA</code>。</p>
+<p><code>RCON</code> 只活在容器裡，compose 沒有把 25575 公布出去。密碼換掉，這個檔案不要再貼到別的地方。</p>
+<p>啟動並看日誌，等到出現 <code>Done</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/minecraft</span><br><span class="line">docker compose up -d</span><br><span class="line">docker compose logs -f</span><br></pre></td></tr></table></figure>
+
+<p>第一次會下載伺服器，多等幾分鐘。確認只聽在本機：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ss -lnt | grep 25565</span><br><span class="line"><span class="comment"># 要看到 127.0.0.1:25565</span></span><br></pre></td></tr></table></figure>
+
+<p>世界在 <code>~/minecraft/data</code>。<code>docker compose down</code> 不會刪掉這個目錄。升級映像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker compose pull</span><br><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>版本號要升級時，先備份 <code>data</code>，再改 <code>VERSION</code>，然後執行上面兩行。</p>
+<h2 id="跳板：讓外網連得到-25565"><a href="#跳板：讓外網連得到-25565" class="headerlink" title="跳板：讓外網連得到 25565"></a>跳板：讓外網連得到 25565</h2><p>在離玩家近的區域開一台 Amazon Linux 2023。舊免費額度用 <code>t2.micro</code>，新帳號改選當下標成 free tier eligible 的最小機型。安全群組先開兩個規則：</p>
+<table>
+<thead>
+<tr>
+<th>連接埠</th>
+<th>來源</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TCP 22</td>
+<td>家裡目前的 IP（主控台的 My IP）</td>
+<td>自己登入</td>
+</tr>
+<tr>
+<td>TCP 25565</td>
+<td><code>0.0.0.0/0</code></td>
+<td>朋友連 Minecraft</td>
+</tr>
+</tbody></table>
+<p>22 不要對全世界開。家裡 IP 變了導致登不進去時，從 AWS 主控台改這條規則即可，主控台不走這台機器的 SSH。</p>
+<p>接著申請一個 Elastic IP 並掛到這台執行個體。沒掛之前，停止再開啟會換一個公網 IP，朋友存的位址就失效。掛上之後，原本自動配的那個公網 IP 會被放掉，帳號裡仍然只有一個位址。</p>
+<p>SSH 預設把反向隧道綁在 <code>127.0.0.1</code>，那樣只有跳板自己連得到。要讓安全群組放進來的流量被接到隧道上，跳板的 sshd 得允許客戶端指定監聽位址。新增：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># /etc/ssh/sshd_config.d/99-minecraft-tunnel.conf</span><br><span class="line">AllowTcpForwarding yes</span><br><span class="line">GatewayPorts clientspecified</span><br><span class="line">ClientAliveInterval 30</span><br><span class="line">ClientAliveCountMax 3</span><br></pre></td></tr></table></figure>
+
+<p><code>GatewayPorts clientspecified</code> 的意思是：客戶端有寫監聽位址才對外聽。沒寫的話仍然只聽 loopback。<code>ClientAlive*</code> 讓斷掉的隧道被清掉，避免 25565 被一條已經死掉的連線占住。</p>
+<p>檢查語法、確認設定有被讀進去，再重載：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> sshd -t</span><br><span class="line"><span class="built_in">sudo</span> sshd -T | grep -i gatewayports</span><br><span class="line"><span class="built_in">sudo</span> systemctl reload sshd</span><br></pre></td></tr></table></figure>
+
+<p>輸出要是 <code>gatewayports clientspecified</code>。若仍是 <code>gatewayports no</code>，就是主設定檔裡已有 <code>GatewayPorts no</code>，而且比這個 drop-in 先被讀到。把那一行改成 <code>GatewayPorts clientspecified</code> 再查一次。sshd 同一項設定以先讀到的為準。</p>
+<p>另外建一個只能轉連接埠的使用者，不拿來登入做別的事：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> useradd --create-home --shell /bin/bash tunnel</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /home/tunnel/.ssh</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 700 /home/tunnel/.ssh</span><br></pre></td></tr></table></figure>
+
+<p><code>/home/tunnel/.ssh/authorized_keys</code> 先留空，下一節把虛擬機的公鑰貼進來。那一行會限制這把金鑰只能轉 25565。</p>
+<h2 id="把隧道做成斷線會自己回來"><a href="#把隧道做成斷線會自己回來" class="headerlink" title="把隧道做成斷線會自己回來"></a>把隧道做成斷線會自己回來</h2><p>在<strong>虛擬機</strong>裡產生一把沒有密碼的金鑰。沒有密碼是為了讓開機能自己連；權限靠跳板上的 <code>authorized_keys</code> 收緊，這把金鑰做不了別的事。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -f ~/.ssh/mc-tunnel -N <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/mc-tunnel.pub</span><br></pre></td></tr></table></figure>
+
+<p>把印出來的公鑰放到跳板的 <code>/home/tunnel/.ssh/authorized_keys</code>，整行是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">restrict,port-forwarding,permitlisten=&quot;*:25565&quot; ssh-ed25519 AAAA... mc-tunnel</span><br></pre></td></tr></table></figure>
+
+<p><code>restrict</code> 關掉終端、指令和轉發，後面的 <code>port-forwarding</code> 再把轉發打開，<code>permitlisten</code> 只放行 25565。檔案權限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chown</span> -R tunnel:tunnel /home/tunnel/.ssh</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 600 /home/tunnel/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p><code>permitlisten</code> 需要 OpenSSH 7.9 之後的版本。Amazon Linux 2023 和 Ubuntu 22.04 之後都有。</p>
+<p>回到虛擬機，先手動試一次。<code>203.0.113.10</code> 換成自己的 Elastic IP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ssh -N \</span><br><span class="line">  -o ExitOnForwardFailure=<span class="built_in">yes</span> \</span><br><span class="line">  -o ServerAliveInterval=30 \</span><br><span class="line">  -o ServerAliveCountMax=3 \</span><br><span class="line">  -o StrictHostKeyChecking=accept-new \</span><br><span class="line">  -i ~/.ssh/mc-tunnel \</span><br><span class="line">  -R 0.0.0.0:25565:127.0.0.1:25565 \</span><br><span class="line">  tunnel@203.0.113.10</span><br></pre></td></tr></table></figure>
+
+<p><code>-R 0.0.0.0:25565:127.0.0.1:25565</code> 是整篇的關鍵：跳板在所有介面上聽 25565，流量送回虛擬機的 Minecraft。少寫前面的 <code>0.0.0.0:</code>，跳板就只聽它自己，朋友會一直逾時。<code>ExitOnForwardFailure=yes</code> 讓「連接埠沒綁上」變成直接失敗，而不是一條看起來還活著、其實沒在轉的連線。</p>
+<p>在跳板上另開一個工作階段確認：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ss -lntp | grep 25565</span><br><span class="line"><span class="comment"># 要看到 0.0.0.0:25565，行程是 sshd</span></span><br></pre></td></tr></table></figure>
+
+<p>再用手機網路，或任何不在家裡的機器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -vz 203.0.113.10 25565</span><br></pre></td></tr></table></figure>
+
+<p>TCP 通了只代表隧道通了。再用 Minecraft 客戶端加這組位址，連接埠維持預設的 25565。</p>
+<p>手動這條確認沒問題後，用 Ctrl-C 停掉，改由 systemd 接手。虛擬機裡新增 <code>/etc/systemd/system/mc-tunnel.service</code>。<code>User=</code> 和 <code>/home/mc</code> 換成客體裡實際的登入名稱（金鑰就是上一步 <code>ssh-keygen</code> 寫在那個家目錄的）：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=Minecraft reverse SSH tunnel</span><br><span class="line"><span class="attr">After</span>=network-<span class="literal">on</span>line.target docker.service</span><br><span class="line"><span class="attr">Wants</span>=network-<span class="literal">on</span>line.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">User</span>=mc</span><br><span class="line"><span class="attr">ExecStart</span>=/usr/bin/ssh -N \</span><br><span class="line">  -o <span class="attr">ExitOnForwardFailure</span>=<span class="literal">yes</span> \</span><br><span class="line">  -o <span class="attr">ServerAliveInterval</span>=<span class="number">30</span> \</span><br><span class="line">  -o <span class="attr">ServerAliveCountMax</span>=<span class="number">3</span> \</span><br><span class="line">  -o <span class="attr">StrictHostKeyChecking</span>=accept-new \</span><br><span class="line">  -i /home/mc/.ssh/mc-tunnel \</span><br><span class="line">  -R 0.0.0.0:25565:127.0.0.1:25565 \</span><br><span class="line">  tunnel@203.0.113.10</span><br><span class="line"><span class="attr">Restart</span>=always</span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> --now mc-tunnel.service</span><br><span class="line">systemctl status mc-tunnel.service</span><br></pre></td></tr></table></figure>
+
+<p>之後虛擬機重開，Docker 會把 Minecraft 拉起來（<code>restart: unless-stopped</code>），這個服務會把隧道重新連上。</p>
+<h2 id="朋友怎麼連"><a href="#朋友怎麼連" class="headerlink" title="朋友怎麼連"></a>朋友怎麼連</h2><p>客戶端的伺服器位址填 Elastic IP。左下角的遊戲版本要和 <code>VERSION</code> 一致，否則會被拒絕進入。</p>
+<p>白名單打開之前，不要把 IP 傳出去。虛擬機裡：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/minecraft</span><br><span class="line">docker compose <span class="built_in">exec</span> mc rcon-cli whitelist on</span><br><span class="line">docker compose <span class="built_in">exec</span> mc rcon-cli whitelist add 朋友的遊戲 ID</span><br></pre></td></tr></table></figure>
+
+<p>保持預設的正版驗證（online mode）。沒有登入 Mojang 帳號的客戶端連不上。</p>
+<p>備份就是把 <code>data</code> 打包。打包前先停伺服器，避免抄到寫到一半的世界：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/minecraft</span><br><span class="line">docker compose stop</span><br><span class="line">tar -czf ~/mc-backup-$(<span class="built_in">date</span> +%F).tar.gz data</span><br><span class="line">docker compose start</span><br></pre></td></tr></table></figure>
+
+<h2 id="隧道通了但人進不去時"><a href="#隧道通了但人進不去時" class="headerlink" title="隧道通了但人進不去時"></a>隧道通了但人進不去時</h2><p>依序看這四個地方：</p>
+<ol>
+<li>跳板上 <code>ss</code> 顯示的是 <code>127.0.0.1:25565</code>。<code>-R</code> 少了 <code>0.0.0.0:</code>，或是 sshd 的 <code>GatewayPorts</code> 仍是預設的 <code>no</code>。</li>
+<li>客戶端立刻失敗，日誌寫 <code>remote port forwarding failed</code>。25565 還被舊的 sshd 占著，或是 <code>permitlisten</code> 那一行和實際監聽位址不符。在跳板上把占住 25565 的那條 sshd 結束，虛擬機的 <code>mc-tunnel</code> 會自己重連。</li>
+<li>客戶端說版本不符。把 <code>VERSION</code> 改成客戶端顯示的版本，備份 <code>data</code> 之後重建容器。</li>
+<li>容器反覆重啟。<code>docker compose logs</code> 裡如果是 EULA，就是 <code>EULA</code> 沒設成 <code>TRUE</code>；如果是記憶體，把客體記憶體加大，或把 <code>MEMORY</code> 從 <code>2G</code> 降下來。</li>
+</ol>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><ol>
+<li>伺服器放在家裡的 VirtualBox 客體裡，用 Docker 跑 Paper，連接埠只綁 <code>127.0.0.1</code>。</li>
+<li>外網入口是一台很小的 EC2，只轉 TCP，不跑遊戲。</li>
+<li>反向隧道由家裡主動連出，路由器不用開連接埠，也避開 CGNAT。</li>
+<li>跳板的 sshd 要設 <code>GatewayPorts clientspecified</code>，客戶端的 <code>-R</code> 要寫 <code>0.0.0.0:25565</code>。</li>
+<li>隧道金鑰在 <code>authorized_keys</code> 裡收成只能轉 25565，SSH 的 22 只對家裡的 IP 開放。</li>
+<li>白名單先開，再把 Elastic IP 給朋友。世界資料在 <code>~/minecraft/data</code>，停機後打包即可備份。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jeffreyc2017.github.io/blog/2024/09/16/how-to-set-up-minecraft-server-at-home/" data-id="cmvev751a0002ms0c6ar1gyo9" data-title="How to Set Up Minecraft Server At Home And Expose It To Public" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Minecraft-Server/" rel="tag">Minecraft Server</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../../2026/07/09/ai/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          AI 模型是不是越大越聰明？
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../07/08/vscode_crash_after_update/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Resolving VSCode Crash After Update on macOS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/GIT/" rel="tag">GIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/MacPorts/" rel="tag">MacPorts</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Minecraft-Server/" rel="tag">Minecraft Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/REACT/" rel="tag">REACT</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/RETRO/" rel="tag">RETRO</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Raspberry-Pi/" rel="tag">Raspberry Pi</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/SSD/" rel="tag">SSD</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/Troubleshooting/" rel="tag">Troubleshooting</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/VSCode/" rel="tag">VSCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="../../../../tags/zsh/" rel="tag">zsh</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/AI/" style="font-size: 10px;">AI</a> <a href="../../../../tags/GIT/" style="font-size: 10px;">GIT</a> <a href="../../../../tags/Linux/" style="font-size: 10px;">Linux</a> <a href="../../../../tags/MacPorts/" style="font-size: 10px;">MacPorts</a> <a href="../../../../tags/Minecraft-Server/" style="font-size: 10px;">Minecraft Server</a> <a href="../../../../tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="../../../../tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="../../../../tags/REACT/" style="font-size: 10px;">REACT</a> <a href="../../../../tags/RETRO/" style="font-size: 10px;">RETRO</a> <a href="../../../../tags/Raspberry-Pi/" style="font-size: 10px;">Raspberry Pi</a> <a href="../../../../tags/SSD/" style="font-size: 10px;">SSD</a> <a href="../../../../tags/Troubleshooting/" style="font-size: 20px;">Troubleshooting</a> <a href="../../../../tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="../../../../tags/macOS/" style="font-size: 20px;">macOS</a> <a href="../../../../tags/python/" style="font-size: 10px;">python</a> <a href="../../../../tags/zsh/" style="font-size: 10px;">zsh</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2026/10/">October 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../../2026/10/09/macbook-pro-catalina-environment-cleanup/">老 MacBook Pro（Catalina）環境大掃除：zsh 啟動 1.2 秒 → 0.04 秒、磁碟多出 21GB</a>
+          </li>
+        
+          <li>
+            <a href="../../../../2026/08/22/raspberry-pi-5-usb-ssd-freeze-uas-quirk/">Raspberry Pi 5 外接 USB SSD 無故凍死：RTL9210B + UAS 掉線的定位與修復</a>
+          </li>
+        
+          <li>
+            <a href="../../../../2026/07/09/ai/">AI 模型是不是越大越聰明？</a>
+          </li>
+        
+          <li>
+            <a href="">How to Set Up Minecraft Server At Home And Expose It To Public</a>
+          </li>
+        
+          <li>
+            <a href="../../../07/08/vscode_crash_after_update/">Resolving VSCode Crash After Update on macOS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Jeffrey Cai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives/" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="../../../../js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="../../../../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
